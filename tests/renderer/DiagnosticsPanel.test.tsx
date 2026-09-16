@@ -52,7 +52,6 @@ const buildApiMock = () => {
     },
     diagnostic: {
       checkAutoReply: jest.fn().mockResolvedValue({ ok: false, error: 'not stubbed' }),
-      testReply: jest.fn().mockResolvedValue({ ok: false, error: 'not stubbed' }),
       systemHealth: jest.fn().mockResolvedValue({ ok: false, error: 'not stubbed' }),
     },
     shop: {
@@ -208,128 +207,6 @@ describe('DiagnosticsPanel', () => {
       expect(screen.getByText('平台登录已过期')).toBeInTheDocument();
       expect(screen.getByText('DeepSeek API Key 未配置')).toBeInTheDocument();
     });
-  });
-
-  it('shows test reply section only when shop is running', async () => {
-    (window as any).api.diagnostic.checkAutoReply.mockResolvedValue({
-      ok: true,
-      report: {
-        shopId: 'shop-001',
-        shopName: '测试店铺A',
-        platform: 'pinduoduo',
-        autoReply: true,
-        loginStatus: 'logged_in',
-        hasShop: true,
-        state: 'Healthy',
-        apiKeyConfigured: true,
-        apiKeyPreview: 'sk-****',
-        ruleCount: 5,
-        platformUrl: 'https://example.com',
-        issues: [],
-      },
-    });
-
-    await renderWithProviders(<DiagnosticsPanel />);
-    await waitFor(() => {
-      expect(screen.getByText('测试店铺A (pinduoduo)')).toBeInTheDocument();
-    });
-
-    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'shop-001' } });
-    fireEvent.click(screen.getByText('检查配置'));
-
-    await waitFor(() => {
-      expect(screen.getByPlaceholderText('输入测试消息...')).toBeInTheDocument();
-    });
-  });
-
-  it('hides test reply section when shop is not running', async () => {
-    (window as any).api.diagnostic.checkAutoReply.mockResolvedValue({
-      ok: true,
-      report: {
-        shopId: 'shop-002',
-        shopName: '微信小店B',
-        platform: 'weixin',
-        autoReply: false,
-        loginStatus: 'logged_out',
-        hasShop: false,
-        state: null,
-        apiKeyConfigured: false,
-        apiKeyPreview: '未配置',
-        ruleCount: 0,
-        platformUrl: '',
-        issues: ['店铺未启动'],
-      },
-    });
-
-    await renderWithProviders(<DiagnosticsPanel />);
-    await waitFor(() => {
-      expect(screen.getByText('微信小店B (weixin)')).toBeInTheDocument();
-    });
-
-    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'shop-002' } });
-    fireEvent.click(screen.getByText('检查配置'));
-
-    await waitFor(() => {
-      expect(screen.getByText('店铺未启动')).toBeInTheDocument();
-    });
-    expect(screen.queryByPlaceholderText('输入测试消息...')).not.toBeInTheDocument();
-  });
-
-  it('calls testReply and shows pipeline result', async () => {
-    (window as any).api.diagnostic.checkAutoReply.mockResolvedValue({
-      ok: true,
-      report: {
-        shopId: 'shop-001',
-        shopName: '测试店铺A',
-        platform: 'pinduoduo',
-        autoReply: true,
-        loginStatus: 'logged_in',
-        hasShop: true,
-        state: 'Healthy',
-        apiKeyConfigured: true,
-        apiKeyPreview: 'sk-****',
-        ruleCount: 5,
-        platformUrl: 'https://example.com',
-        issues: [],
-      },
-    });
-    (window as any).api.diagnostic.testReply.mockResolvedValue({
-      ok: true,
-      result: {
-        shopId: 'shop-001',
-        reply: '您好，这款商品有货的，可以放心购买。',
-        matchedRule: 'greeting',
-        sensitiveHits: [],
-        tokenInput: 50,
-        tokenOutput: 30,
-        latencyMs: 850,
-        pipeline: [
-          { step: 'rule_match', status: 'ok', detail: 'greeting' },
-          { step: 'sensitive_check', status: 'ok' },
-          { step: 'deepseek', status: 'skip', detail: 'rule matched' },
-        ],
-      },
-    });
-
-    await renderWithProviders(<DiagnosticsPanel />);
-    await waitFor(() => {
-      expect(screen.getByText('测试店铺A (pinduoduo)')).toBeInTheDocument();
-    });
-
-    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'shop-001' } });
-    fireEvent.click(screen.getByText('检查配置'));
-
-    const input = await screen.findByPlaceholderText('输入测试消息...');
-    fireEvent.change(input, { target: { value: '你好，这个商品有货吗？' } });
-    fireEvent.click(screen.getByText('测试'));
-
-    await waitFor(() => {
-      expect(screen.getByText('您好，这款商品有货的，可以放心购买。')).toBeInTheDocument();
-      expect(screen.getByText('rule_match')).toBeInTheDocument();
-      expect(screen.getByText('deepseek')).toBeInTheDocument();
-      expect(screen.getByText('耗时: 850ms')).toBeInTheDocument();
-    });
-    expect((window as any).api.diagnostic.testReply).toHaveBeenCalledWith('shop-001', '你好，这个商品有货吗？');
   });
 
   it('shows error toast when checkAutoReply fails', async () => {

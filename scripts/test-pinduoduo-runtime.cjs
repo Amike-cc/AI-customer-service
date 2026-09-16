@@ -157,9 +157,9 @@ function fmt(obj) {
   } else { console.log(`  [${FAIL}] ${r6.error}`); }
 
   // R7: 测试回复（testReply，验证 AI 管线对拼多多可用）
-  // preload.ts L710: window.api.diagnostic.testReply(shopId, message) → {ok, result?}
+  // preload.ts: window.api.test.reply(shopId, message)
   console.log('\n--- R7: 测试回复（AI 管线可用性）---');
-  const r7 = await callApi(ws, `window.api.diagnostic.testReply('${PINDUODUO_SHOP_ID}', '你好，这个商品还有货吗？')`, 60000);
+  const r7 = await callApi(ws, `window.api.test.reply('${PINDUODUO_SHOP_ID}', '你好，这个商品还有货吗？')`, 60000);
   if (r7.ok && r7.data?.ok && r7.data?.result) {
     const tr = r7.data.result;
     console.log(`  [${PASS}] reply=${(tr.reply || '').slice(0, 80)}`);

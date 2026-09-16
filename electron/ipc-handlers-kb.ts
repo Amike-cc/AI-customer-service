@@ -310,21 +310,6 @@ export function registerKbIpcHandlers(backend: Backend): void {
     }
   });
 
-  // ============ FAQ 分类查询 ============
-
-  ipcMain.handle('kb:listFaqsByCategory', async (_evt, shopId: string, category?: string) => {
-    try {
-      const id = validateShopId(shopId);
-      const engine = resolveRuleEngine(backend, id);
-      const faqs = engine.listFaqs();
-      if (!category || category === 'all') return faqs;
-      return faqs.filter((f) => (f.category ?? 'general') === category);
-    } catch (err) {
-      logError(backend, 'kb:listFaqsByCategory', err, { shopId, category });
-      return [];
-    }
-  });
-
   ipcMain.handle('kb:getCategories', async (_evt, shopId?: string) => {
     try {
       const lib = templateLib(shopId || undefined);

@@ -93,21 +93,6 @@ async function main() {
   `);
   console.log(methodDef);
 
-  console.log('\n=== 3. 检查 diagnostic.testReply 方法 ===');
-  const diagTest = await evaluate(wsUrl, `
-    try {
-      const r = await window.api.diagnostic.testReply({
-        message: '你好',
-        shopId: '1783701851888',
-        sessionId: 'diag-test-1'
-      });
-      return JSON.stringify({ ok: r?.ok, error: r?.error, reply: r?.reply ? r.reply.substring(0, 100) : null, keys: r ? Object.keys(r).slice(0, 10) : null });
-    } catch (e) {
-      return JSON.stringify({ error: e.message });
-    }
-  `);
-  console.log(diagTest);
-
   console.log('\n=== 4. 检查 diagnostic.checkAutoReply 方法 ===');
   const autoReplyCheck = await evaluate(wsUrl, `
     try {

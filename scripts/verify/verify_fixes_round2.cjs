@@ -127,11 +127,11 @@ async function main() {
   const faqImportOk = faqImport && (faqImport.includes('"imported"') || faqImport.includes('ERROR'));
   console.log(`  ${faqImportOk ? '✅ 通过（API 可调用）' : '❌ 失败'}\n`);
 
-  // P1-4: config:updateApiKey 不再写 .env（验证 updateApiKey 仍可用）
-  console.log('[P1-4] config:updateApiKey 调用（不写 .env）...');
+  // P1-4: config:updateLlmApiKey 统一写入 DPAPI
+  console.log('[P1-4] config:updateLlmApiKey 调用...');
   const apiKeyUpdate = await cdpEval(`(async () => {
     try {
-      const r = await window.api.config.updateApiKey('sk-test-placeholder-for-verify-only-1234567890');
+      const r = await window.api.config.updateLlmApiKey('deepseek', 'sk-test-placeholder-for-verify-only-1234567890');
       return JSON.stringify(r);
     } catch (e) {
       return 'ERROR:' + e.message;
@@ -184,7 +184,7 @@ async function main() {
     { name: 'P1-3 rule:export', ok: ruleExportOk },
     { name: 'P1-3 faq:export', ok: faqExportOk },
     { name: 'P1-3 faq:import', ok: faqImportOk },
-    { name: 'P1-4 config:updateApiKey', ok: apiKeyOk },
+    { name: 'P1-4 config:updateLlmApiKey', ok: apiKeyOk },
     { name: 'P0-1 kb:savePrompt', ok: savePromptOk },
     { name: 'P0-1 kb:listVersions', ok: listVersionsOk },
   ];

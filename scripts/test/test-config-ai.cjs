@@ -107,14 +107,13 @@ async function main() {
 
   console.log('\n=== 3. 测试配置 API Key 读取/写入接口（不实际修改） ===');
   const apiKeyTest = await evaluate(wsUrl, `
-    const key = await window.api.config.getApiKey('deepseek');
+    const key = await window.api.config.getLlmApiKey('deepseek');
     return JSON.stringify({
-      hasMethod: typeof window.api.config.updateApiKey === 'function',
-      currentKey: key ? key.substring(0, 8) + '***' + key.substring(key.length - 4) : null,
-      keyLength: key ? key.length : 0,
-      isTest: key ? key.includes('test') : false,
+      hasMethod: typeof window.api.config.updateLlmApiKey === 'function',
+      currentKey: key.masked || null,
+      configured: key.configured,
       // 不实际写入，只验证方法存在
-      canUpdate: typeof window.api.config.updateApiKey === 'function'
+      canUpdate: typeof window.api.config.updateLlmApiKey === 'function'
     });
   `);
   console.log(apiKeyTest);

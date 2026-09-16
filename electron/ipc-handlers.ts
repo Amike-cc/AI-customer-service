@@ -461,28 +461,6 @@ export function registerIpcHandlers(
     }
   });
 
-  ipcMain.handle(
-    'shop:sendReply',
-    async (_evt, shopId: string, text: string, opts?: { sessionId?: string; clientMessageId?: string }) => {
-      try {
-        const id = validateShopId(shopId);
-        const reply = validateString(text, 'text', 5000);
-        const sessionId = opts?.sessionId ? validateString(opts.sessionId, 'sessionId', 200) : undefined;
-        const clientMessageId = opts?.clientMessageId
-          ? validateString(opts.clientMessageId, 'clientMessageId', 128)
-          : undefined;
-        const result = await backend.supervisor.sendManualReply(id, reply, {
-          sessionId,
-          clientMessageId,
-        });
-        return { ok: true, status: result.status, clientMessageId: result.clientMessageId };
-      } catch (err) {
-        backend.logger.error({ shopId, err }, '快捷回复发送失败');
-        return { ok: false, error: err instanceof Error ? err.message : String(err) };
-      }
-    },
-  );
-
   (backend.webviewManager as unknown as WebviewManager).on('loginStatusChanged', (data: { shopId: string; status: string; oldStatus?: string }) => {
     backend.db.shops.setLoginStatus(data.shopId, data.status as 'logged_out' | 'logging_in' | 'logged_in');
     broadcast('shop:loginStatusChanged', data);
@@ -668,30 +646,6 @@ export function registerIpcHandlers(
       work_time: c.work_time,
       buyer: c.buyer,
     };
-  });
-
-  ipcMain.handle('config:getApiKey', async () => {
-    const key = backend.deepseekClient.currentApiKey;
-    if (!key) return '';
-    // 只返回前 8 位和后 4 位，中间用 * 替换
-    if (key.length <= 12) return '****';
-    return `${key.slice(0, 8)}${'*'.repeat(Math.max(0, key.length - 12))}${key.slice(-4)}`;
-  });
-
-  ipcMain.handle('config:updateApiKey', async (_evt, newKey: string) => {
-    try {
-      if (!newKey || typeof newKey !== 'string' || newKey.trim().length === 0) {
-        throw new Error('API Key 不能为空');
-      }
-      const trimmed = newKey.trim();
-      backend.deepseekClient.updateApiKey(trimmed);
-      await backend.secretStore.set('deepseek_api_key', trimmed);
-      backend.logger.info('API Key 已更新并写入 DPAPI 加密存储（不再写入明文 .env）');
-      return { ok: true };
-    } catch (err) {
-      backend.logger.error({ err }, 'API Key 更新失败');
-      return { ok: false, error: err instanceof Error ? err.message : String(err) };
-    }
   });
 
   // ============ 多 LLM Provider 配置 ============
@@ -1321,10 +1275,6 @@ export function registerIpcHandlers(
     return backend.diagnostics.runAll();
   });
 
-  ipcMain.handle('diagnose:health', async () => {
-    return backend.diagnostics.healthCheck();
-  });
-
   // 诊断：返回所有 WebContentsView 的当前状态
   ipcMain.handle('diagnose:viewState', async () => {
     try {
@@ -1404,19 +1354,6 @@ export function registerIpcHandlers(
       };
     } catch (err) {
       backend.logger.error({ err, shopId }, '诊断自动回复失败');
-      return { ok: false, error: err instanceof Error ? err.message : String(err) };
-    }
-  });
-
-  // 诊断：测试回复（执行完整 AI 管线但不发送）
-  ipcMain.handle('diagnostic:testReply', async (_evt, shopId: string, message: string) => {
-    try {
-      const id = validateShopId(shopId);
-      const msg = validateString(message, '测试消息', 1000);
-      const result = await backend.supervisor.testReply(id, msg);
-      return { ok: true, result };
-    } catch (err) {
-      backend.logger.error({ err, shopId }, '测试回复失败');
       return { ok: false, error: err instanceof Error ? err.message : String(err) };
     }
   });
@@ -2053,12 +1990,6 @@ export function registerIpcHandlers(
     }
   });
 
-  ipcMain.handle('escalation:stats', async (_evt, shopId: string, sinceMs?: number) => {
-    const id = validateShopId(shopId);
-    const since = typeof sinceMs === 'number' && sinceMs > 0 ? sinceMs : Date.now() - 86400000;
-    return backend.db.intent.getEscalationStats(id, since);
-  });
-
   // ============ 人工坐席相关 ============
 
   ipcMain.handle('agent:queue', async (_evt, shopId: string) => {
@@ -2069,16 +2000,6 @@ export function registerIpcHandlers(
   ipcMain.handle('agent:list', async (_evt, shopId: string) => {
     const id = validateShopId(shopId);
     return backend.db.agent.listByShop(id);
-  });
-
-  ipcMain.handle('agent:refresh', async (_evt, shopId: string) => {
-    const id = validateShopId(shopId);
-    try {
-      const agents = backend.db.agent.listByShop(id);
-      return { ok: true, agents };
-    } catch (err) {
-      return { ok: false, agents: [], error: err instanceof Error ? err.message : String(err) };
-    }
   });
 
   ipcMain.handle('agent:assign', async (_evt, escalationId: unknown, agentId: unknown) => {

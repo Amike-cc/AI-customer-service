@@ -562,12 +562,6 @@ const api = {
       ipcRenderer.invoke('shop:rename', shopId, newName),
     markRead: (shopId: string): Promise<{ ok: boolean }> =>
       ipcRenderer.invoke('shop:markRead', shopId),
-    sendReply: (
-      shopId: string,
-      text: string,
-      opts?: { sessionId?: string; clientMessageId?: string },
-    ): Promise<{ ok: boolean; status?: 'sent' | 'duplicate'; clientMessageId?: string | null; error?: string }> =>
-      ipcRenderer.invoke('shop:sendReply', shopId, text, opts),
     getBusinessConfig: (shopId: string): Promise<{ ok: boolean; config?: ShopBusinessConfig; error?: string }> =>
       ipcRenderer.invoke('shop:getBusinessConfig', shopId),
     updateBusinessConfig: (shopId: string, updates: Partial<ShopBusinessConfig>): Promise<{ ok: boolean; error?: string }> =>
@@ -620,9 +614,6 @@ const api = {
   },
   config: {
     get: (): Promise<Record<string, unknown>> => ipcRenderer.invoke('config:get'),
-    getApiKey: (): Promise<string> => ipcRenderer.invoke('config:getApiKey'),
-    updateApiKey: (key: string): Promise<{ ok: boolean }> =>
-      ipcRenderer.invoke('config:updateApiKey', key),
     // 多 LLM Provider 配置
     getLlmProviders: (): Promise<LlmProvidersResult> =>
       ipcRenderer.invoke('config:getLlmProviders'),
@@ -774,16 +765,12 @@ const api = {
   },
   diagnose: {
     run: (): Promise<DiagnosticSummary> => ipcRenderer.invoke('diagnose:run'),
-    health: (): Promise<{ status: string; uptime: number; memory: { heapUsed: number; heapTotal: number } }> =>
-      ipcRenderer.invoke('diagnose:health'),
     viewState: (): Promise<{ ok: boolean; state?: Record<string, unknown>; error?: string }> =>
       ipcRenderer.invoke('diagnose:viewState'),
   },
   diagnostic: {
     checkAutoReply: (shopId: string): Promise<{ ok: boolean; report?: AutoReplyDiagnosticReport; error?: string }> =>
       ipcRenderer.invoke('diagnostic:checkAutoReply', shopId),
-    testReply: (shopId: string, message: string): Promise<{ ok: boolean; result?: TestReplyResult; error?: string }> =>
-      ipcRenderer.invoke('diagnostic:testReply', shopId, message),
     systemHealth: (): Promise<{ ok: boolean; health?: SystemHealthReport; error?: string }> =>
       ipcRenderer.invoke('diagnostic:systemHealth'),
   },
@@ -880,8 +867,6 @@ const api = {
       ipcRenderer.invoke('kb:importTemplates', shopId, json),
     exportTemplates: (shopId?: string, category?: string): Promise<string> =>
       ipcRenderer.invoke('kb:exportTemplates', shopId, category),
-    listFaqsByCategory: (shopId: string, category?: string): Promise<FaqInfo[]> =>
-      ipcRenderer.invoke('kb:listFaqsByCategory', shopId, category),
     exportKnowledge: (shopId?: string): Promise<string> =>
       ipcRenderer.invoke('kb:exportKnowledge', shopId),
     importKnowledge: (json: string, shopId?: string): Promise<{ imported: number }> =>
@@ -950,16 +935,12 @@ const api = {
       ipcRenderer.invoke('escalation:list', shopId, status),
     resolve: (escalationId: number, resolution?: string): Promise<{ ok: boolean }> =>
       ipcRenderer.invoke('escalation:resolve', escalationId, resolution),
-    stats: (shopId: string, sinceMs?: number): Promise<Array<{ status: string; count: number }>> =>
-      ipcRenderer.invoke('escalation:stats', shopId, sinceMs),
   },
   agent: {
     queue: (shopId: string): Promise<unknown[]> =>
       ipcRenderer.invoke('agent:queue', shopId),
     list: (shopId: string): Promise<unknown[]> =>
       ipcRenderer.invoke('agent:list', shopId),
-    refresh: (shopId: string): Promise<{ ok: boolean; agents: unknown[]; error?: string }> =>
-      ipcRenderer.invoke('agent:refresh', shopId),
     assign: (escalationId: number, agentId: string): Promise<{ ok: boolean; error?: string }> =>
       ipcRenderer.invoke('agent:assign', escalationId, agentId),
   },

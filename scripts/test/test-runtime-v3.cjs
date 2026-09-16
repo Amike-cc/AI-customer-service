@@ -129,12 +129,12 @@ async function main() {
 
   console.log('\n=== 5. DeepSeek API Key ===');
   const keyResult = await evaluate(wsUrl, `
-    const key = await window.api.config.getApiKey('deepseek');
-    return JSON.stringify({ key: key ? key.substring(0, 8) + '***' + key.substring(key.length - 4) : null, isTest: key ? key.includes('test') : false, length: key ? key.length : 0 });
+    const key = await window.api.config.getLlmApiKey('deepseek');
+    return JSON.stringify({ key: key.masked || null, configured: key.configured });
   `).catch((e) => JSON.stringify({ error: e.message }));
   let keyInfo;
   try { keyInfo = JSON.parse(keyResult); } catch (e) { keyInfo = { error: e.message }; }
-  console.log(`✅ API Key: ${keyInfo.key || '(未配置)'} (length=${keyInfo.length}, isTest=${keyInfo.isTest})`);
+  console.log(`✅ API Key: ${keyInfo.key || '(未配置)'} (configured=${keyInfo.configured})`);
 
   console.log('\n=== 6. 买家档案统计 ===');
   if (shops.length > 0) {

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Info, Database, Copy, RefreshCw } from 'lucide-react';
 import { LlmProvidersPanel } from './LlmProvidersPanel';
-import { DiagnosticsPanel } from './DiagnosticsPanel';
 import { Card } from '../common/Card';
 import { Button } from '../common/Button';
 import { LoadingSpinner } from '../common/LoadingSpinner';
@@ -78,7 +77,6 @@ export function ConfigPanel() {
         </div>
       )}
       <LlmProvidersPanel />
-      <DiagnosticsPanel />
       <Card className={styles.section}>
         <div className={styles.sectionHeader}>
           <Database size={16} />

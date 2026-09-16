@@ -25,16 +25,6 @@ async function main() {
     }
     console.log(response.result.value);
 
-    const healthResponse = await client.Runtime.evaluate({
-      expression: 'window.api.diagnose.health().then((health) => JSON.stringify(health))',
-      returnByValue: true,
-      awaitPromise: true,
-    });
-    if (healthResponse.exceptionDetails) {
-      throw new Error(healthResponse.exceptionDetails.exception?.description || healthResponse.exceptionDetails.text);
-    }
-    console.log(healthResponse.result.value);
-
     const uiResponse = await client.Runtime.evaluate({
       expression: `(async () => {
         const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

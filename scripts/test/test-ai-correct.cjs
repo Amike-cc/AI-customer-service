@@ -71,17 +71,6 @@ async function main() {
   `);
   console.log(test1);
 
-  console.log('\n=== 2. diagnostic.testReply 正确调用 ===');
-  const test2 = await evaluate(wsUrl, `
-    try {
-      const r = await window.api.diagnostic.testReply('1783701851888', '这个商品有现货吗？');
-      return JSON.stringify(r, null, 2);
-    } catch (e) {
-      return JSON.stringify({ error: e.message });
-    }
-  `);
-  console.log(test2);
-
   console.log('\n=== 3. 测试不同类型消息 ===');
   const messages = [
     '你好',

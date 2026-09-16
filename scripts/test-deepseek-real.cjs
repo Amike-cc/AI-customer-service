@@ -75,7 +75,7 @@ async function callApi(ws, code, timeoutMs = 120000) {
   // 测试 1：用未命中规则的"公司信息"消息（业务咨询但不命中具体商品规则）
   const testMsg1 = '请问你们公司全名叫什么？统一社会信用代码是多少？';
   console.log(`--- 测试 1: "${testMsg1}" ---`);
-  const t1 = await callApi(ws, `window.api.diagnostic.testReply('${PINDUODUO_SHOP_ID}', '${testMsg1.replace(/'/g, "\\'")}')`, 120000);
+  const t1 = await callApi(ws, `window.api.test.reply('${PINDUODUO_SHOP_ID}', '${testMsg1.replace(/'/g, "\\'")}')`, 120000);
   if (t1.ok && t1.data?.ok && t1.data?.result) {
     const tr = t1.data.result;
     console.log(`  ${INFO} reply: ${(tr.reply || '').slice(0, 200)}`);
@@ -107,7 +107,7 @@ async function callApi(ws, code, timeoutMs = 120000) {
   console.log(`\n--- 测试 2: 一条闲聊消息 ---`);
   const testMsg2 = '今天天气真好啊，外面下雨了吗';
   console.log(`  ${INFO} 测试消息: "${testMsg2}"`);
-  const t2 = await callApi(ws, `window.api.diagnostic.testReply('${PINDUODUO_SHOP_ID}', '${testMsg2}')`, 120000);
+  const t2 = await callApi(ws, `window.api.test.reply('${PINDUODUO_SHOP_ID}', '${testMsg2}')`, 120000);
   if (t2.ok && t2.data?.ok && t2.data?.result) {
     const tr = t2.data.result;
     console.log(`  ${INFO} reply: ${(tr.reply || '').slice(0, 200)}`);

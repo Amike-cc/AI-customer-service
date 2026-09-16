@@ -54,7 +54,7 @@ async function evaluate(ws, expr) {
     ['window.api.buyer.stats 函数', 'typeof window.api.buyer?.stats'],
     ['window.api.buyer.updateTags 函数', 'typeof window.api.buyer?.updateTags'],
     ['window.api.buyer.updateRemark 函数', 'typeof window.api.buyer?.updateRemark'],
-    ['window.api.agent.refresh 函数', 'typeof window.api.agent?.refresh'],
+    ['window.api.agent.list 函数', 'typeof window.api.agent?.list'],
     ['window.api.log.history 函数', 'typeof window.api.log?.history'],
     ['window.api.onTransferEvent 函数', 'typeof window.api.shop?.onTransferEvent'],
   ];

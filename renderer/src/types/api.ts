@@ -648,11 +648,6 @@ export interface Api {
     stop: (shopId: string) => Promise<{ ok: boolean; state: string | null }>;
     rename: (shopId: string, newName: string) => Promise<{ ok: boolean }>;
     markRead: (shopId: string) => Promise<{ ok: boolean }>;
-    sendReply: (
-      shopId: string,
-      text: string,
-      opts?: { sessionId?: string; clientMessageId?: string },
-    ) => Promise<{ ok: boolean; status?: 'sent' | 'duplicate'; clientMessageId?: string | null; error?: string }>;
     getBusinessConfig: (shopId: string) => Promise<{ ok: boolean; config?: ShopBusinessConfig; error?: string }>;
     updateBusinessConfig: (shopId: string, updates: Partial<ShopBusinessConfig>) => Promise<{ ok: boolean; error?: string }>;
     onStateChanged: (cb: (data: unknown) => void) => () => void;
@@ -672,8 +667,6 @@ export interface Api {
   };
   config: {
     get: () => Promise<Record<string, unknown>>;
-    getApiKey: () => Promise<string>;
-    updateApiKey: (key: string) => Promise<{ ok: boolean }>;
     // 多 LLM Provider 配置
     getLlmProviders: () => Promise<LlmProvidersResult>;
     getLlmApiKey: (providerType: ProviderType) => Promise<LlmApiKeyResult>;
@@ -784,11 +777,9 @@ export interface Api {
   };
   diagnose: {
     run: () => Promise<DiagnosticSummary>;
-    health: () => Promise<{ status: string; uptime: number; memory: { heapUsed: number; heapTotal: number } }>;
   };
   diagnostic: {
     checkAutoReply: (shopId: string) => Promise<{ ok: boolean; report?: AutoReplyDiagnosticReport; error?: string }>;
-    testReply: (shopId: string, message: string) => Promise<{ ok: boolean; result?: TestReplyResult; error?: string }>;
     systemHealth: () => Promise<{ ok: boolean; health?: SystemHealthReport; error?: string }>;
   };
   db: {
@@ -844,7 +835,6 @@ export interface Api {
     getCategoryStats: (shopId?: string) => Promise<CategoryStats[]>;
     importTemplates: (shopId: string, json: string) => Promise<{ imported: number; errors: string[] }>;
     exportTemplates: (shopId?: string, category?: string) => Promise<string>;
-    listFaqsByCategory: (shopId: string, category?: string) => Promise<FaqInfo[]>;
     exportKnowledge: (shopId?: string) => Promise<string>;
     importKnowledge: (json: string, shopId?: string) => Promise<{ imported: number }>;
     listVersions: (shopId: string, component?: string) => Promise<KbVersion[]>;
@@ -886,12 +876,10 @@ export interface Api {
   escalation: {
     list: (shopId: string, status?: string) => Promise<EscalationRecord[]>;
     resolve: (escalationId: number, resolution?: string) => Promise<{ ok: boolean }>;
-    stats: (shopId: string, sinceMs?: number) => Promise<Array<{ status: string; count: number }>>;
   };
   agent: {
     queue: (shopId: string) => Promise<QueueEntry[]>;
     list: (shopId: string) => Promise<HumanAgent[]>;
-    refresh: (shopId: string) => Promise<{ ok: boolean; agents: HumanAgent[]; error?: string }>;
     assign: (escalationId: number, agentId: string) => Promise<{ ok: boolean; error?: string }>;
   };
   view: {

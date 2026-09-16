@@ -4,10 +4,9 @@ import { Card } from '../common/Card';
 import { Button } from '../common/Button';
 import { LoadingSpinner } from '../common/LoadingSpinner';
 import { Select } from '../common/Select';
-import { Input } from '../common/Input';
 import { useToast } from '../common/Toast';
 import { useShops } from '../../hooks/useShops';
-import type { DiagnosticResult, DiagnosticSummary, AutoReplyDiagnosticReport, TestReplyResult, SystemHealthReport } from '../../types/api';
+import type { DiagnosticResult, DiagnosticSummary, AutoReplyDiagnosticReport, SystemHealthReport } from '../../types/api';
 import styles from './DiagnosticsPanel.module.css';
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -129,10 +128,7 @@ function AutoReplyDiagnostics() {
   const { shops } = useShops();
   const [selectedShopId, setSelectedShopId] = useState<string>('');
   const [report, setReport] = useState<AutoReplyDiagnosticReport | null>(null);
-  const [testResult, setTestResult] = useState<TestReplyResult | null>(null);
-  const [testMessage, setTestMessage] = useState('你好，这个商品有货吗？');
   const [checking, setChecking] = useState(false);
-  const [testing, setTesting] = useState(false);
   const toast = useToast();
 
   const runCheck = async () => {
@@ -161,32 +157,6 @@ function AutoReplyDiagnostics() {
     }
   };
 
-  const runTestReply = async () => {
-    if (!selectedShopId) {
-      toast.show('warn', '请先选择店铺');
-      return;
-    }
-    if (!testMessage.trim()) {
-      toast.show('warn', '请输入测试消息');
-      return;
-    }
-    setTesting(true);
-    setTestResult(null);
-    try {
-      const res = await window.api.diagnostic.testReply(selectedShopId, testMessage.trim());
-      if (res.ok && res.result) {
-        setTestResult(res.result);
-        toast.show('success', '测试完成');
-      } else {
-        toast.show('error', '测试失败: ' + (res.error ?? '未知错误'));
-      }
-    } catch (err) {
-      toast.show('error', '测试失败: ' + (err instanceof Error ? err.message : String(err)));
-    } finally {
-      setTesting(false);
-    }
-  };
-
   return (
     <div className={styles.autoReplySection}>
       <div className={styles.header}>
@@ -201,7 +171,6 @@ function AutoReplyDiagnostics() {
           onChange={(e) => {
             setSelectedShopId(e.target.value);
             setReport(null);
-            setTestResult(null);
           }}
           options={[
             { value: '', label: shops.length === 0 ? '暂无可用店铺' : '选择店铺...' },
@@ -262,50 +231,6 @@ function AutoReplyDiagnostics() {
         </div>
       )}
 
-      {report && report.hasShop && (
-        <div className={styles.testReplySection}>
-          <div className={styles.testReplyHeader}>
-            <MessageSquare size={14} />
-            <span>测试回复</span>
-          </div>
-          <div className={styles.safetyNote} role="note">仅生成回复预览和执行链路，不会向真实买家发送消息。</div>
-          <div className={styles.testReplyInput}>
-            <Input
-              aria-label="自动回复诊断测试消息"
-              value={testMessage}
-              onChange={(e) => setTestMessage(e.target.value)}
-              placeholder="输入测试消息..."
-              maxLength={200}
-            />
-            <Button size="sm" onClick={runTestReply} loading={testing}>
-              {testing ? '测试中...' : '测试'}
-            </Button>
-          </div>
-          {testing && <LoadingSpinner size={20} />}
-          {!testing && testResult && (
-            <div className={styles.testResult}>
-              <div className={styles.testReplyContent}>
-                <span className={styles.reportLabel}>AI 回复：</span>
-                <span>{testResult.reply || '(空)'}</span>
-              </div>
-              <div className={styles.testPipeline}>
-                {testResult.pipeline.map((p, idx) => (
-                  <div key={idx} className={styles.pipelineItem} data-status={p.status}>
-                    {p.status === 'ok' ? <CheckCircle2 size={12} /> : p.status === 'fail' ? <XCircle size={12} /> : <SkipForward size={12} />}
-                    <span>{p.step}</span>
-                    {p.detail && <span className={styles.pipelineDetail}>{p.detail}</span>}
-                  </div>
-                ))}
-              </div>
-              <div className={styles.testStats}>
-                <span>耗时: {testResult.latencyMs}ms</span>
-                <span>Token: {testResult.tokenInput}/{testResult.tokenOutput}</span>
-                {testResult.matchedRule && <span>规则: {testResult.matchedRule}</span>}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }

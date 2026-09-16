@@ -58,7 +58,7 @@ interface TabConfig {
 }
 
 const TAB_CONFIG: TabConfig[] = [
-  { key: 'config', label: '系统配置', description: '模型、诊断与数据维护', group: '业务配置', icon: <SettingsIcon size={16} /> },
+  { key: 'config', label: '系统配置', description: '模型与数据维护', group: '业务配置', icon: <SettingsIcon size={16} /> },
   { key: 'products', label: '商品管理', description: '商品资料、同步与推荐', group: '业务配置', icon: <Package size={16} /> },
   { key: 'rules', label: '规则引擎', description: '快捷规则与回复测试', group: '业务配置', icon: <ListChecks size={16} /> },
   { key: 'knowledge', label: '知识库', description: '话术、FAQ 与内容治理', group: '业务配置', icon: <BookOpen size={16} /> },

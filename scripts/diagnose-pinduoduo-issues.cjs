@@ -158,7 +158,7 @@ function fmt(obj) {
   // 用一条明显不会命中 greeting 等通用规则的消息
   const testMsg = '请问这款手机支持 5G 网络吗，电池容量是多少毫安时？';
   console.log(`  ${INFO} 测试消息: "${testMsg}"`);
-  const d5 = await callApi(ws, `window.api.diagnostic.testReply('${PINDUODUO_SHOP_ID}', '${testMsg.replace(/'/g, "\\'")}')`, 90000);
+  const d5 = await callApi(ws, `window.api.test.reply('${PINDUODUO_SHOP_ID}', '${testMsg.replace(/'/g, "\\'")}')`, 90000);
   if (d5.ok && d5.data?.ok && d5.data?.result) {
     const tr = d5.data.result;
     console.log(`  ${PASS} reply: ${(tr.reply || '').slice(0, 120)}`);

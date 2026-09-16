@@ -126,13 +126,9 @@ export function AgentPanel({ shops }: AgentPanelProps) {
     if (!shopId || refreshing) return;
     setRefreshing(true);
     try {
-      const result = await window.api.agent.refresh(shopId);
-      if (!result.ok) {
-        throw new Error(result.error ?? '未知错误');
-      }
       const loaded = await loadData(false);
       if (loaded) {
-        showToast('success', `已刷新 ${result.agents.length} 个客服`);
+        showToast('success', '坐席数据已刷新');
       }
     } catch (err) {
       setDataStale(true);

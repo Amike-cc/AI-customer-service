@@ -100,13 +100,6 @@ async function main() {
   `).catch((e) => 'ERROR: ' + e.message);
   console.log(healthResult);
 
-  console.log('\n=== diagnose.health 调用 ===');
-  const dResult = await evaluate(wsUrl, `
-    const h = await window.api.diagnose.health();
-    return JSON.stringify(h, null, 2);
-  `).catch((e) => 'ERROR: ' + e.message);
-  console.log(dResult);
-
   console.log('\n=== metrics.summary 调用 ===');
   const mResult = await evaluate(wsUrl, `
     const shops = await window.api.shop.list();
