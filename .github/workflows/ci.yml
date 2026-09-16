@@ -104,6 +104,12 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      # better-sqlite3 需要为 Electron ABI 重建，显式加载 GitHub runner 上的 MSVC 工具链
+      - name: 配置 Visual Studio C++ 构建环境
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
       - name: 安装依赖
         run: npm ci
 
