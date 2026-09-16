@@ -23,17 +23,6 @@ export function formatRelative(ts: number | string): string {
   return formatDate(ts);
 }
 
-export function formatNumber(n: number): string {
-  if (n === undefined || n === null || isNaN(n)) return '0';
-  return n.toLocaleString('en-US');
-}
-
-export function maskApiKey(key: string): string {
-  if (!key) return '未配置';
-  if (key.length <= 12) return '****';
-  return key.slice(0, 8) + '*'.repeat(Math.max(0, key.length - 12)) + key.slice(-4);
-}
-
 export function truncate(str: string, maxLen: number): string {
   if (!str) return '';
   if (str.length <= maxLen) return str;

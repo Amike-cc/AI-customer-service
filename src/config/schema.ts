@@ -161,17 +161,10 @@ export const ConfigSchema = z.object({
   }),
 
   product: z.object({
-    cache_index_in_memory: z.boolean(),
     match_algorithm: z.enum(['exact', 'fuzzy', 'hybrid']),
     fuzzy_threshold: z.number().min(0).max(1),
     keywords_weight: z.number().min(0).max(1),
     fuzzy_match_weight: z.number().min(0).max(1),
-    fallback_to_human: z.boolean(),
-    auto_sync: z.object({
-      enabled: z.boolean(),
-      cron: z.string(),
-      api_url: z.string(),
-    }),
   }),
 
   logging: z.object({
@@ -195,9 +188,6 @@ export const ConfigSchema = z.object({
     alert: z.object({
       feishu_webhook: z.string(),
       feishu_secret: z.string(),
-      sms_access_key: z.string(),
-      sms_access_secret: z.string(),
-      sms_phone_numbers: z.array(z.string()),
       dedup_window_ms: z.number().int().positive(),
       maintenance_windows: z.array(
         z.object({
@@ -224,7 +214,7 @@ export const ConfigSchema = z.object({
     weixin: z.object({ web_url: z.string().default('https://store.weixin.qq.com/shop/kf') }),
   }),
 
-  /** 平台级别配置覆盖：允许为每个平台独立设置 AI 模型、限流、人工模拟等参数 */
+  /** 平台级别配置覆盖：允许为每个平台独立设置 AI 模型参数 */
   platform_overrides: z.record(
     z.object({
       /** 平台专属 AI 配置覆盖 */
@@ -236,18 +226,6 @@ export const ConfigSchema = z.object({
         timeout_ms: z.number().int().positive().optional(),
         prompt_template: z.string().optional(),
         fallback_response: z.string().optional(),
-      }).optional(),
-      /** 平台专属限流配置覆盖 */
-      ratelimit: z.object({
-        per_shop_per_minute: z.number().int().min(1).max(60).optional(),
-        burst_allowance: z.number().int().min(0).optional(),
-        night_factor: z.number().min(0).max(1).optional(),
-      }).optional(),
-      /** 平台专属人工模拟配置覆盖 */
-      human_simulator: z.object({
-        typing_speed_min_cpm: z.number().int().min(30).max(300).optional(),
-        typing_speed_max_cpm: z.number().int().min(30).max(300).optional(),
-        ai_reply_delay_max_ms: z.number().int().min(0).optional(),
       }).optional(),
     }),
   ).optional().default({}),
@@ -478,35 +456,5 @@ export function getPlatformDeepseekConfig(config: Config, platformId: string): P
     timeout_ms: overrides?.timeout_ms ?? config.deepseek.timeout_ms,
     prompt_template: overrides?.prompt_template ?? config.deepseek.prompt_template,
     fallback_response: overrides?.fallback_response ?? config.deepseek.fallback_response,
-  };
-}
-
-/**
- * 获取指定平台的生效限流配置（全局配置 + 平台覆盖）
- */
-export function getPlatformRatelimitConfig(
-  config: Config,
-  platformId: string,
-): { per_shop_per_minute: number; burst_allowance: number; night_factor: number } {
-  const overrides = config.platform_overrides?.[platformId]?.ratelimit;
-  return {
-    per_shop_per_minute: overrides?.per_shop_per_minute ?? config.ratelimit.per_shop_per_minute,
-    burst_allowance: overrides?.burst_allowance ?? config.ratelimit.burst_allowance,
-    night_factor: overrides?.night_factor ?? config.ratelimit.night_factor,
-  };
-}
-
-/**
- * 获取指定平台的生效人工模拟配置（全局配置 + 平台覆盖）
- */
-export function getPlatformHumanSimulatorConfig(
-  config: Config,
-  platformId: string,
-): { typing_speed_min_cpm: number; typing_speed_max_cpm: number; ai_reply_delay_max_ms: number } {
-  const overrides = config.platform_overrides?.[platformId]?.human_simulator;
-  return {
-    typing_speed_min_cpm: overrides?.typing_speed_min_cpm ?? config.human_simulator.typing_speed_min_cpm,
-    typing_speed_max_cpm: overrides?.typing_speed_max_cpm ?? config.human_simulator.typing_speed_max_cpm,
-    ai_reply_delay_max_ms: overrides?.ai_reply_delay_max_ms ?? config.human_simulator.ai_reply_delay_max_ms,
   };
 }

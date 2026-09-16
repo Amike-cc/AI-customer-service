@@ -114,12 +114,3 @@ export const DIALOG_SCENARIOS: DialogScenario[] = [
     closingHint: '退货工单已记录，是否还有其他问题？',
   },
 ];
-
-/** 按场景 ID 索引 */
-export const DIALOG_SCENARIO_MAP: Record<string, DialogScenario> = DIALOG_SCENARIOS.reduce(
-  (acc, s) => {
-    acc[s.id] = s;
-    return acc;
-  },
-  {} as Record<string, DialogScenario>,
-);

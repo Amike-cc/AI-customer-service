@@ -96,13 +96,10 @@ export function createTestConfig(overrides?: Partial<Config>): Config {
     },
     silent_wait: { duration_ms: 60000, max_consecutive: 3 },
     product: {
-      cache_index_in_memory: true,
       match_algorithm: 'hybrid',
       fuzzy_threshold: 0.7,
       keywords_weight: 0.4,
       fuzzy_match_weight: 0.6,
-      fallback_to_human: true,
-      auto_sync: { enabled: false, cron: '0 3 * * *', api_url: '' },
     },
     logging: {
       level: 'warn',
@@ -124,9 +121,6 @@ export function createTestConfig(overrides?: Partial<Config>): Config {
       alert: {
         feishu_webhook: '',
         feishu_secret: '',
-        sms_access_key: '',
-        sms_access_secret: '',
-        sms_phone_numbers: [],
         dedup_window_ms: 300000,
         maintenance_windows: [],
       },

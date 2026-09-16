@@ -94,20 +94,7 @@ export const weixinSelectors: PlatformSelectors = {
   unreadIndicatorSelectors: ['[class*="unread"]', '[class*="badge"]'],
 };
 
-// Alias generic selectors
-export const genericSelectors: PlatformSelectors = feigeSelectors;
-
 // ============ 登录检测配置 ============
-export const genericLoginDetection: PlatformLoginDetection = {
-  loginPageUrlPatterns: ['login', 'signin', 'passport', 'sso'],
-  loginPageUrl: '',
-  loggedInDomSelectors: ['[class*="avatar"]', '[class*="user"]', '[class*="account"]'],
-  loginExpiredTexts: ['登录过期', '请重新登录', '登录失效', '重新登录', '身份过期'],
-  requestHeaderDomains: [],
-  navigationGuardBaseUrl: 'https://example.com',
-  allowedAuthDomains: ['example.com'],
-};
-
 export const feigeLoginDetection: PlatformLoginDetection = {
   loginPageUrlPatterns: ['login', 'signin', 'passport', 'sso'],
   loginPageUrl: 'https://im.jinritemai.com/pc_seller_v2/main/login',

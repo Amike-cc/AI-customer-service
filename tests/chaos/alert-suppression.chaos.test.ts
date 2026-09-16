@@ -29,9 +29,6 @@ describe('Chaos: 告警抑制与去重', () => {
         alert: {
           feishu_webhook: '',
           feishu_secret: '',
-          sms_access_key: '',
-          sms_access_secret: '',
-          sms_phone_numbers: [],
           dedup_window_ms: 100,
           maintenance_windows: [],
         },

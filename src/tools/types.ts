@@ -30,14 +30,6 @@ export const AGENT_ROLE_NAMES: Record<AgentRole, string> = {
   general: '通用客服',
 };
 
-/** 专员角色适用场景（用于 PromptBuilder 指导 AI 选择） */
-export const AGENT_ROLE_SCENARIOS: Record<AgentRole, string> = {
-  after_sales: '退货退款、商品质量问题、损坏补发、投诉纠纷',
-  logistics: '快递查询、催发货、改地址、物流异常、签收问题',
-  pre_sales: '商品咨询、尺码推荐、活动优惠、库存查询',
-  general: '复杂问题、跨类目问题、AI 无法判断的混合问题',
-};
-
 /** 工具定义（OpenAI function calling 格式） */
 export interface ToolDefinition {
   type: 'function';
