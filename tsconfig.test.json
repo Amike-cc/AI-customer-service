@@ -7,6 +7,6 @@
     "jsx": "react-jsx",
     "types": ["node", "jest"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "tests/**/*.ts", "tests/**/*.tsx", "renderer/src/**/*.ts", "renderer/src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "electron/**/*.ts", "tests/**/*.ts", "tests/**/*.tsx", "renderer/src/**/*.ts", "renderer/src/**/*.tsx"],
   "exclude": ["node_modules", "dist", "vision"]
 }

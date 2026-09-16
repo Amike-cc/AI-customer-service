@@ -17,6 +17,7 @@ import type { IWebContents, IWebviewManager, LoginStatus, VisualCaptureTarget } 
 import { getPlatform } from '../src/platform';
 import type { PlatformId } from '../src/platform';
 import { FingerprintManager } from './fingerprint/manager';
+import { registerFramePreload, unregisterFramePreload } from './session-preload';
 import type { AppLogger } from '../src/logging/logger';
 import {
   computeViewBounds,
@@ -145,10 +146,7 @@ export class WebviewManager extends EventEmitter implements IWebviewManager {
     const preloadPath = FingerprintManager.preparePreloadScript(shopId, fingerprint);
 
     // 注册 preload 脚本（在页面任何脚本执行之前注入指纹覆盖）
-    ses.registerPreloadScript({
-      type: 'frame',
-      filePath: preloadPath,
-    });
+    registerFramePreload(ses, preloadPath);
 
     // 设置该店铺独有的 User-Agent
     ses.setUserAgent(fingerprint.userAgent);
@@ -1399,7 +1397,7 @@ export class WebviewManager extends EventEmitter implements IWebviewManager {
       // 额外将 preload 注册为 frame 类型，使其在所有 frame（包括 iframe/微前端容器）中运行，
       // 从而拦截微前端内发起的 fetch/XHR 请求（如抖店商品列表 API /product/tproduct/list）
       try {
-        framePreloadId = ses.registerPreloadScript({ type: 'frame', filePath: preloadPath });
+        framePreloadId = registerFramePreload(ses, preloadPath);
         this.logger?.info({ shopId, preloadPath, framePreloadId }, 'scrapeUrlInHiddenWindow: 已注册frame preload（覆盖iframe）');
       } catch (e) {
         this.logger?.warn({ shopId, err: e instanceof Error ? e.message : String(e) }, 'scrapeUrlInHiddenWindow: 注册frame preload失败，仅主frame生效');
@@ -1484,7 +1482,7 @@ export class WebviewManager extends EventEmitter implements IWebviewManager {
       win.destroy();
       // 注销 frame preload 注册，避免删除文件后 session 残留无效注册
       if (framePreloadId) {
-        try { ses.unregisterPreloadScript(framePreloadId); } catch { /* ignore */ }
+        try { unregisterFramePreload(ses, framePreloadId, preloadPath); } catch { /* ignore */ }
       }
       // 清理临时 preload 文件
       if (preloadPath) {

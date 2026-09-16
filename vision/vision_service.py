@@ -30,6 +30,8 @@ os.environ['FLAGS_use_mkldnn_bf16'] = '0'
 import cv2
 import numpy as np
 
+from runtime_compat import install_optional_dependency_fallbacks
+
 # 日志输出到 stderr，避免污染 stdout 通信
 logging.basicConfig(
     stream=sys.stderr,
@@ -50,6 +52,12 @@ class VisionService:
     async def load_models(self) -> None:
         """加载 PaddleOCR 模型"""
         logger.info('loading PaddleOCR engine')
+        fallbacks = install_optional_dependency_fallbacks(('pandas', 'bidi'))
+        if fallbacks:
+            logger.warning(
+                'optional OCR dependencies unavailable; installed process-local fallback: %s',
+                ', '.join(fallbacks),
+            )
         from paddleocr import PaddleOCR
         ocr_kwargs = {
             'use_textline_orientation': self.config.get('ocr_use_angle_cls', False),
