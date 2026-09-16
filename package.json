@@ -29,7 +29,7 @@
     "electron:rebuild": "electron-rebuild -f -w better-sqlite3",
     "electron:start": "chcp 65001 > nul && electron . --remote-debugging-port=9222",
     "electron:prod": "cross-env NODE_ENV=production electron .",
-    "electron:pack": "npm run electron:build && electron-builder --win",
+    "electron:pack": "npm run electron:build && electron-builder --win --publish never",
     "build:all": "npm run typecheck && npm run test:all && npm run renderer:build && tsc -p tsconfig.json",
     "build:prod": "npm run typecheck && npm run test:all && npm run renderer:build && tsc -p tsconfig.json && cross-env NODE_ENV=production electron-builder --win"
   },
