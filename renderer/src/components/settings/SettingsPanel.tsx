@@ -12,6 +12,7 @@ import {
   BarChart3,
   Sparkles,
   Heart,
+  DownloadCloud,
 } from 'lucide-react';
 import type { ShopListItem } from '../../types/api';
 import type { SettingsTabKey } from '../../utils/constants';
@@ -31,6 +32,7 @@ const AgentPanel = lazy(() => import('../analytics/AgentPanel').then((m) => ({ d
 const LearningPanel = lazy(() => import('../learning/LearningPanel').then((m) => ({ default: m.LearningPanel })));
 const MetricsPanel = lazy(() => import('../analytics/MetricsPanel').then((m) => ({ default: m.MetricsPanel })));
 const HealthDashboard = lazy(() => import('../monitor/HealthDashboard').then((m) => ({ default: m.HealthDashboard })));
+const UpdatePanel = lazy(() => import('./UpdatePanel').then((m) => ({ default: m.UpdatePanel })));
 
 const PanelFallback = () => (
   <div className={styles.panelFallback} role="status" aria-label="正在加载设置页面">
@@ -67,6 +69,7 @@ const TAB_CONFIG: TabConfig[] = [
   { key: 'logs', label: '日志告警', description: '运行日志与实时告警', group: '系统治理', icon: <ScrollText size={16} /> },
   { key: 'audit', label: '审计日志', description: '关键操作与回复审计', group: '系统治理', icon: <FileText size={16} /> },
   { key: 'metrics', label: '运营指标', description: '服务数据与趋势洞察', group: '系统治理', icon: <BarChart3 size={16} /> },
+  { key: 'updates', label: '软件更新', description: '检查版本与安装更新', group: '系统治理', icon: <DownloadCloud size={16} /> },
   { key: 'health', label: '健康监控', description: '店铺和服务实时状态', group: '系统治理', icon: <Heart size={16} /> },
 ];
 
@@ -150,7 +153,7 @@ export function SettingsPanel({ shops, initialTab = 'config' }: SettingsPanelPro
           ))}
         </div>
         <div className={styles.navigationFooter}>
-          <span>12 个核心模块</span>
+          <span>13 个核心模块</span>
           <span className={styles.footerDot} />
           <span>配置自动保存</span>
         </div>
@@ -177,6 +180,7 @@ export function SettingsPanel({ shops, initialTab = 'config' }: SettingsPanelPro
               {activeTab === 'learning' && <LearningPanel shops={shops} />}
               {activeTab === 'metrics' && <MetricsPanel shops={shops} />}
               {activeTab === 'health' && <HealthDashboard shops={shops} />}
+              {activeTab === 'updates' && <UpdatePanel />}
             </Suspense>
           </ErrorBoundary>
         </div>

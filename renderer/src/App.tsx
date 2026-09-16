@@ -20,6 +20,7 @@ import { useShops } from './hooks/useShops';
 import { useAlerts } from './hooks/useAlerts';
 import { useWorkspaceLayout } from './hooks/useWorkspaceLayout';
 import type { SettingsTabKey } from './utils/constants';
+import type { UpdateState } from '../../shared/update-types';
 import type { NavKey } from './components/layout/Sidebar';
 import styles from './App.module.css';
 
@@ -29,6 +30,7 @@ export default function App() {
   const [settingsTab, setSettingsTab] = useState<SettingsTabKey>('config');
   const [focusSessionId, setFocusSessionId] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState('就绪');
+  const [updateState, setUpdateState] = useState<UpdateState>({ status: 'idle', currentVersion: '' });
   const {
     shops,
     loading,
@@ -66,6 +68,22 @@ export default function App() {
   useEffect(() => {
     setCompactPanelOpen(false);
   }, [activeShopId, view]);
+
+  useEffect(() => {
+    let mounted = true;
+    const unsubscribe = window.api.update.onStateChanged((state) => {
+      if (mounted) setUpdateState(state);
+    });
+    void window.api.update.getState().then((state) => {
+      if (mounted) setUpdateState(state);
+    }).catch(() => {
+      // 更新状态在设置页中展示，启动阶段忽略读取失败。
+    });
+    return () => {
+      mounted = false;
+      unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     if (showTimeline) {
@@ -118,6 +136,14 @@ export default function App() {
     setActiveNav('shops');
     setSettingsTab('config');
     setStatusMessage('全局设置');
+  }, [exitView]);
+
+  const handleOpenUpdates = useCallback(() => {
+    void exitView();
+    setView('settings');
+    setActiveNav('shops');
+    setSettingsTab('updates');
+    setStatusMessage('软件更新');
   }, [exitView]);
 
   const handleNavigate = useCallback(
@@ -197,6 +223,8 @@ export default function App() {
           alertCount={alertCount}
           onOpenNotifications={() => setAlertsOpen(true)}
           onOpenSettings={handleOpenSettings}
+          updateAvailable={updateState.status === 'available' || updateState.status === 'downloaded'}
+          onOpenUpdates={handleOpenUpdates}
           onSelectSearchResult={handleSearchResult}
         />
         <div className={`${styles.main} ${showFeige ? styles.mainTransparent : ''}`}>

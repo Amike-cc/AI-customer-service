@@ -274,6 +274,17 @@
   font-weight: 750;
 }
 
+.updateDot {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  border: 2px solid var(--bg-secondary);
+  border-radius: 50%;
+}
+
 @media (max-width: 980px) {
   .brand {
     min-width: auto;

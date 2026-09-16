@@ -97,5 +97,6 @@ export const SETTINGS_TABS = [
   'learning',
   'metrics',
   'health',
+  'updates',
 ] as const;
 export type SettingsTabKey = (typeof SETTINGS_TABS)[number];

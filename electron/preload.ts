@@ -6,6 +6,7 @@
  */
 import { contextBridge, ipcRenderer } from 'electron';
 import type { IpcRendererEvent } from 'electron';
+import type { UpdateActionResult, UpdateState } from '../shared/update-types';
 
 export interface ShopListItem {
   shopId: string;
@@ -517,6 +518,17 @@ export interface LearningStats {
 const api = {
   app: {
     openExternal: (url: string): Promise<void> => ipcRenderer.invoke('app:openExternal', url),
+  },
+  update: {
+    getState: (): Promise<UpdateState> => ipcRenderer.invoke('app:update:getState'),
+    check: (): Promise<UpdateActionResult> => ipcRenderer.invoke('app:update:check'),
+    download: (): Promise<UpdateActionResult> => ipcRenderer.invoke('app:update:download'),
+    install: (): Promise<UpdateActionResult> => ipcRenderer.invoke('app:update:install'),
+    onStateChanged: (callback: (state: UpdateState) => void): (() => void) => {
+      const listener = (_event: IpcRendererEvent, state: UpdateState) => callback(state);
+      ipcRenderer.on('app:update:state', listener);
+      return () => ipcRenderer.removeListener('app:update:state', listener);
+    },
   },
   shop: {
     list: (): Promise<ShopListItem[]> => ipcRenderer.invoke('shop:list'),

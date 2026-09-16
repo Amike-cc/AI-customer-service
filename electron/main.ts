@@ -20,6 +20,7 @@ import { ElectronLogTransport, type WinstonLogInfo } from './log-transport';
 import { WebviewManager } from './webview-manager';
 import type { StateName } from '../src/state/ShopStateMachine';
 import type winston from 'winston';
+import { UpdateManager } from './update-manager';
 
 function diagLog(msg: string): void {
   const diagPath = path.join(app.getPath('userData'), 'diagnostics.log');
@@ -34,6 +35,7 @@ function diagLog(msg: string): void {
 let backend: Backend | null = null;
 let webviewManager: WebviewManager | null = null;
 let mainWindow: BrowserWindow | null = null;
+let updateManager: UpdateManager | null = null;
 
 const LOG_BUFFER_CAPACITY = 500;
 const logBuffer: LogEntry[] = [];
@@ -125,13 +127,20 @@ async function bootstrap(): Promise<void> {
   diagLog(`backend 是否为 null: ${backend === null}`);
   createWindow();
   diagLog('createWindow 完成');
+  updateManager = new UpdateManager();
+  diagLog('更新服务已初始化');
 
   if (backend) {
     diagLog('开始注册 IPC 处理器');
     // 注入 logger 到 WebviewManager，使其能记录登录检测和自动恢复日志
     webviewManager.setLogger(backend.logger);
-    registerIpcHandlers(backend, logBuffer);
+    registerIpcHandlers(backend, logBuffer, updateManager);
     diagLog('IPC 处理器已注册');
+    if (app.isPackaged) {
+      setTimeout(() => {
+        void updateManager?.check();
+      }, 10_000);
+    }
     void startShops(backend);
     // per-shop keepalive 已在 ensureView() 中启动，无需全量 reload
     // 全量 reload 会打断正在进行的客服对话，已移除
@@ -252,6 +261,8 @@ app.on('window-all-closed', () => {
 });
 
 async function shutdown(): Promise<void> {
+  updateManager?.dispose();
+  updateManager = null;
   webviewManager?.destroyAll();
   if (backend) {
     try {

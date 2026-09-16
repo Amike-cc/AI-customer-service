@@ -24,6 +24,7 @@ import { OpenAICompatibleProvider } from '../src/gateway/providers/OpenAICompati
 import { ClaudeProvider } from '../src/gateway/providers/ClaudeProvider';
 import { QwenProvider } from '../src/gateway/providers/QwenProvider';
 import type { ProviderOverride } from '../src/gateway/LlmProviderStateStore';
+import type { UpdateManager } from './update-manager';
 
 export type LogEntry = {
   level: string;
@@ -56,6 +57,7 @@ function validateShopId(val: unknown): string {
 export function registerIpcHandlers(
   backend: Backend,
   logBuffer: LogEntry[] = [],
+  updateManager?: UpdateManager,
 ): IpcContext {
   const alertBuffer = new AlertBuffer(200);
 
@@ -78,6 +80,26 @@ export function registerIpcHandlers(
   // 这里通过周期性轮询由前端主动拉取状态，无需额外订阅。
 
   // ============ 应用相关 ============
+
+  ipcMain.handle('app:update:getState', () => updateManager?.getState() ?? {
+    status: 'idle',
+    currentVersion: 'unknown',
+  });
+  ipcMain.handle('app:update:check', () => updateManager?.check() ?? {
+    ok: false,
+    state: { status: 'error', currentVersion: 'unknown', error: '更新服务未初始化' },
+    error: '更新服务未初始化',
+  });
+  ipcMain.handle('app:update:download', () => updateManager?.download() ?? {
+    ok: false,
+    state: { status: 'error', currentVersion: 'unknown', error: '更新服务未初始化' },
+    error: '更新服务未初始化',
+  });
+  ipcMain.handle('app:update:install', () => updateManager?.install() ?? {
+    ok: false,
+    state: { status: 'error', currentVersion: 'unknown', error: '更新服务未初始化' },
+    error: '更新服务未初始化',
+  });
 
   // 允许通过外部浏览器打开的域名白名单（平台官网/商家后台及必要辅助域名）
   const OPEN_EXTERNAL_ALLOWED_HOSTS = [

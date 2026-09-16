@@ -86,6 +86,10 @@ beforeEach(() => {
     audit: { list: jest.fn().mockResolvedValue([]) },
     diagnose: { health: jest.fn().mockResolvedValue({ status: 'ok', uptime: 0, memory: { heapUsed: 0, heapTotal: 0 } }) },
     db: { backup: jest.fn().mockResolvedValue({ ok: true, path: '/tmp/backup.db' }) },
+    update: {
+      getState: jest.fn().mockResolvedValue({ status: 'not-available', currentVersion: '2.0.0' }),
+      check: jest.fn(), download: jest.fn(), install: jest.fn(), onStateChanged: jest.fn(() => () => {}),
+    },
   };
 });
 
@@ -96,18 +100,18 @@ describe('SettingsPanel', () => {
     expect(tab).toHaveAttribute('aria-selected', 'true');
   });
 
-  it('should render all 12 customer-service tabs', async () => {
+  it('should render all 13 customer-service tabs', async () => {
     render(<SettingsPanel shops={mockShops} />);
     await screen.findByText('系统配置管理');
     const tabs = [
       '系统配置', '商品管理', '规则引擎', '知识库', '日志告警',
       '会话查看', '审计日志', '意图分析', '人工坐席', '学习系统',
-      '运营指标', '健康监控',
+      '运营指标', '软件更新', '健康监控',
     ];
     for (const label of tabs) {
       expect(screen.getByRole('tab', { name: new RegExp(`^${label}`) })).toBeInTheDocument();
     }
-    expect(screen.getAllByRole('tab')).toHaveLength(12);
+    expect(screen.getAllByRole('tab')).toHaveLength(13);
   });
 
   it('should link the selected tab to its tabpanel', async () => {

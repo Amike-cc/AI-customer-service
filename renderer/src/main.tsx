@@ -24,6 +24,13 @@ if (typeof window !== 'undefined' && !(window as any).api) {
     app: {
       openExternal: (url: string) => { window.open(url, '_blank', 'noopener,noreferrer'); return Promise.resolve(); },
     },
+    update: {
+      getState: () => Promise.resolve({ status: 'not-available', currentVersion: '浏览器预览' }),
+      check: () => Promise.resolve({ ok: false, state: { status: 'not-available', currentVersion: '浏览器预览' }, error: '浏览器预览模式' }),
+      download: () => Promise.resolve({ ok: false, state: { status: 'not-available', currentVersion: '浏览器预览' }, error: '浏览器预览模式' }),
+      install: () => Promise.resolve({ ok: false, state: { status: 'not-available', currentVersion: '浏览器预览' }, error: '浏览器预览模式' }),
+      onStateChanged: subscribe,
+    },
     shop: {
       list: noopArray, takeover: noopObj, release: noopObj,
       setAutoReply: noopObj, addAccount: noopObj, removeAccount: noopObj,

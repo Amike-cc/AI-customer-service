@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bell, Bird, Moon, Settings, Sun } from 'lucide-react';
+import { Bell, Bird, DownloadCloud, Moon, Settings, Sun } from 'lucide-react';
 import { GlobalSearch } from './GlobalSearch';
 import styles from './TopBar.module.css';
 
@@ -11,10 +11,12 @@ interface TopBarProps {
   alertCount?: number;
   onOpenNotifications?: () => void;
   onOpenSettings?: () => void;
+  updateAvailable?: boolean;
+  onOpenUpdates?: () => void;
   onSelectSearchResult?: (type: string, item: Record<string, unknown>) => void;
 }
 
-export function TopBar({ shopCount, connectionStatus, activeShopId, shopName, alertCount = 0, onOpenNotifications, onOpenSettings, onSelectSearchResult }: TopBarProps) {
+export function TopBar({ shopCount, connectionStatus, activeShopId, shopName, alertCount = 0, onOpenNotifications, onOpenSettings, updateAvailable = false, onOpenUpdates, onSelectSearchResult }: TopBarProps) {
   const [theme, setTheme] = useState<'dark' | 'light'>(
     () => (document.documentElement.getAttribute('data-theme') as 'dark' | 'light') || 'light',
   );
@@ -87,6 +89,10 @@ export function TopBar({ shopCount, connectionStatus, activeShopId, shopName, al
         </button>
         <button type="button" className={styles.iconBtn} title="设置" aria-label="设置" onClick={onOpenSettings}>
           <Settings size={17} />
+        </button>
+        <button type="button" className={styles.iconBtn} title={updateAvailable ? '有新版本可用' : '软件更新'} aria-label="软件更新" onClick={onOpenUpdates}>
+          <DownloadCloud size={17} />
+          {updateAvailable && <span className={styles.updateDot} aria-label="有新版本" />}
         </button>
         <button
           className={styles.themeBtn}

@@ -1,3 +1,5 @@
+import type { UpdateActionResult, UpdateState } from '../../../shared/update-types';
+
 export interface ShopListItem {
   shopId: string;
   shopName: string;
@@ -621,6 +623,13 @@ export interface DeepseekErrorEvent {
 export interface Api {
   app: {
     openExternal: (url: string) => Promise<void>;
+  };
+  update: {
+    getState: () => Promise<UpdateState>;
+    check: () => Promise<UpdateActionResult>;
+    download: () => Promise<UpdateActionResult>;
+    install: () => Promise<UpdateActionResult>;
+    onStateChanged: (callback: (state: UpdateState) => void) => () => void;
   };
   shop: {
     list: () => Promise<ShopListItem[]>;
