@@ -106,6 +106,12 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      # electron-builder 当前内置 node-gyp 仍依赖 Python 3.11 中的 distutils
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
       # better-sqlite3 需要为 Electron ABI 重建，显式加载 GitHub runner 上的 MSVC 工具链
       - name: 配置 Visual Studio C++ 构建环境
         uses: ilammy/msvc-dev-cmd@v1
