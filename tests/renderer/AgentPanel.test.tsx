@@ -65,7 +65,7 @@ function renderPanel(apiOverrides: Record<string, unknown> = {}) {
       assign: jest.fn().mockResolvedValue({ ok: true }),
     },
     escalation: {
-      list: jest.fn().mockResolvedValue([escalation]),
+      list: jest.fn((_shopId: string, status?: string) => Promise.resolve(status === 'assigned' ? [] : [escalation])),
       resolve: jest.fn().mockResolvedValue({ ok: true }),
     },
     ...apiOverrides,
@@ -119,7 +119,7 @@ describe('AgentPanel', () => {
     );
     renderPanel({
       escalation: {
-        list: jest.fn().mockResolvedValue([escalation]),
+        list: jest.fn((_shopId: string, status?: string) => Promise.resolve(status === 'assigned' ? [] : [escalation])),
         resolve,
       },
     });
@@ -172,6 +172,49 @@ describe('AgentPanel', () => {
     });
   });
 
+  it('keeps assigned escalations visible and releases agent workload after resolve', async () => {
+    let resolved = false;
+    const assignedEscalation: EscalationRecord = {
+      ...escalation,
+      status: 'assigned',
+      assignedAgentId: agent.id,
+      assignedAt: now - 10_000,
+    };
+    const resolve = jest.fn().mockImplementation(async () => {
+      resolved = true;
+      return { ok: true };
+    });
+
+    renderPanel({
+      escalation: {
+        list: jest.fn((_shopId: string, status?: string) => {
+          if (status === 'assigned') return Promise.resolve(resolved ? [] : [assignedEscalation]);
+          return Promise.resolve([]);
+        }),
+        resolve,
+      },
+    });
+
+    const escalationRegion = await screen.findByRole('region', {
+      name: '升级工单列表，可横向滚动',
+    });
+    const idCell = within(escalationRegion).getByRole('rowheader', { name: '7' });
+    const row = idCell.closest('tr');
+    expect(row).not.toBeNull();
+    expect(within(row!).getByText('已分配')).toBeInTheDocument();
+    expect(within(row!).getByText(agent.name)).toBeInTheDocument();
+    expect(within(row!).getByRole('button', { name: '分配升级工单 #7' })).toBeDisabled();
+
+    fireEvent.click(within(row!).getByRole('button', { name: '解决升级工单 #7' }));
+    const dialog = screen.getByRole('dialog', { name: '确认解决升级工单' });
+    expect(within(dialog).getByText(/释放该坐席的活跃会话额度/)).toBeInTheDocument();
+    fireEvent.click(within(dialog).getByRole('button', { name: '确认解决' }));
+
+    await waitFor(() => {
+      expect(resolve).toHaveBeenCalledWith(assignedEscalation.id, '手动确认问题已解决');
+    });
+  });
+
   it('disables unsupported manual assignment and explains empty filtered states', async () => {
     const agentApi = {
       list: jest.fn().mockResolvedValue([]),
@@ -181,7 +224,7 @@ describe('AgentPanel', () => {
     renderPanel({
       agent: agentApi,
       escalation: {
-        list: jest.fn().mockResolvedValue([escalation]),
+        list: jest.fn((_shopId: string, status?: string) => Promise.resolve(status === 'assigned' ? [] : [escalation])),
         resolve: jest.fn().mockResolvedValue({ ok: true }),
       },
     });

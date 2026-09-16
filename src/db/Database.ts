@@ -489,6 +489,39 @@ export class Database {
   }
 
   /**
+   * 解决升级工单，并在同一事务内释放已分配坐席的活跃会话额度。
+   * 已解决的工单保持幂等，不会重复扣减坐席负载。
+   */
+  resolveEscalation(
+    id: number,
+    resolution?: string,
+  ): { alreadyResolved: boolean; shopId: string; releasedAgentId?: string } {
+    return this.transaction(() => {
+      const escalation = this.intent.getEscalation(id);
+      if (!escalation) throw new Error('升级工单不存在');
+
+      if (escalation.status === 'resolved') {
+        return {
+          alreadyResolved: true,
+          shopId: escalation.shopId,
+        };
+      }
+
+      const releasedAgentId = escalation.status === 'assigned' ? escalation.assignedAgentId : undefined;
+      this.intent.updateEscalationStatus(id, 'resolved', undefined, resolution);
+      if (releasedAgentId) {
+        this.agent.decrementActiveChats(releasedAgentId);
+      }
+
+      return {
+        alreadyResolved: false,
+        shopId: escalation.shopId,
+        releasedAgentId,
+      };
+    });
+  }
+
+  /**
    * 删除店铺及其全部关联数据（原子事务）
    * 依赖顺序：先删外键引用子表，再删主表 shop_config
    */

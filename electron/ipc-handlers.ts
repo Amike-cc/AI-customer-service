@@ -1980,10 +1980,35 @@ export function registerIpcHandlers(
 
   ipcMain.handle('escalation:resolve', async (_evt, escalationId: number, resolution?: string) => {
     try {
-      if (typeof escalationId !== 'number' || escalationId <= 0) throw new Error('escalationId 无效');
+      if (
+        typeof escalationId !== 'number' ||
+        !Number.isSafeInteger(escalationId) ||
+        escalationId <= 0
+      ) {
+        throw new Error('escalationId 无效');
+      }
       const res = resolution ? validateString(resolution, '处理结果', 1000) : undefined;
-      backend.db.intent.updateEscalationStatus(escalationId, 'resolved', undefined, res);
-      return { ok: true };
+      const result = backend.db.resolveEscalation(escalationId, res);
+
+      if (!result.alreadyResolved) {
+        backend.escalationHandler?.queue.remove(result.shopId, escalationId);
+        backend.metrics.inc(
+          'escalation_resolved_total',
+          1,
+          result.releasedAgentId ? { agent: result.releasedAgentId } : undefined,
+          result.shopId,
+        );
+        backend.logger.info(
+          {
+            shopId: result.shopId,
+            escalationId,
+            releasedAgentId: result.releasedAgentId,
+          },
+          '升级工单已解决',
+        );
+      }
+
+      return { ok: true, alreadyResolved: result.alreadyResolved };
     } catch (err) {
       backend.logger.error({ err, escalationId }, '解决升级失败');
       return { ok: false, error: err instanceof Error ? err.message : String(err) };

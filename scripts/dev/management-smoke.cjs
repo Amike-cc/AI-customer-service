@@ -1,4 +1,4 @@
-/** 管理中心 12 个模块的只读交互冒烟检查。 */
+/** 管理中心 13 个模块的只读交互冒烟检查。 */
 const CDP = require('chrome-remote-interface');
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -9,7 +9,7 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const client = await CDP({ target: main, port: 9222 });
   const { Runtime } = client;
   await Runtime.enable();
-  const labels = ['系统配置', '商品管理', '规则引擎', '知识库', '会话查看', '意图分析', '人工坐席', '学习系统', '日志告警', '审计日志', '运营指标', '健康监控'];
+  const labels = ['系统配置', '商品管理', '规则引擎', '知识库', '会话查看', '意图分析', '人工坐席', '学习系统', '日志告警', '审计日志', '运营指标', '软件更新', '健康监控'];
   const results = [];
   for (const label of labels) {
     const expression = `(() => {

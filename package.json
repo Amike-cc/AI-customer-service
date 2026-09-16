@@ -97,6 +97,7 @@
       "output": "release",
       "buildResources": "build"
     },
+    "artifactName": "${name}-setup-${version}.${ext}",
     "files": [
       "dist/**/*",
       "config/**/*",

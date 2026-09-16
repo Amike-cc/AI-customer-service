@@ -37,6 +37,13 @@ const PRIORITY_CLASSES: Record<EscalationRecord['priority'], string> = {
   low: styles.priorityLow,
 };
 
+const PRIORITY_ORDER: Record<EscalationRecord['priority'], number> = {
+  urgent: 0,
+  high: 1,
+  medium: 2,
+  low: 3,
+};
+
 interface AgentPanelProps {
   shops: ShopListItem[];
 }
@@ -77,16 +84,22 @@ export function AgentPanel({ shops }: AgentPanelProps) {
       if (showInitialLoading) setLoading(true);
 
       try {
-        const [agentList, queueList, escalationList] = await Promise.all([
+        const [agentList, queueList, pendingList, assignedList] = await Promise.all([
           window.api.agent.list(shopId),
           window.api.agent.queue(shopId),
           window.api.escalation.list(shopId, 'pending'),
+          window.api.escalation.list(shopId, 'assigned'),
         ]);
         if (requestId !== loadRequestId.current) return false;
 
+        const activeEscalations = [
+          ...(pendingList as EscalationRecord[]),
+          ...(assignedList as EscalationRecord[]),
+        ].sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority] || a.createdAt - b.createdAt);
+
         setAgents(agentList as HumanAgent[]);
         setQueue(queueList as QueueEntry[]);
-        setEscalations(escalationList as EscalationRecord[]);
+        setEscalations(activeEscalations);
         setLastUpdatedAt(Date.now());
         setDataStale(false);
         return true;
@@ -178,6 +191,8 @@ export function AgentPanel({ shops }: AgentPanelProps) {
 
   const availableAgents = agents.filter((agent) => agent.status === 'available' && agent.activeChats < agent.maxChats);
   const canAssign = typeof window.api.agent?.assign === 'function';
+  const pendingCount = escalations.filter((item) => item.status === 'pending').length;
+  const assignedCount = escalations.filter((item) => item.status === 'assigned').length;
   const selectedShopName = shops.find((shop) => shop.shopId === shopId)?.shopName;
   const lastUpdatedText = lastUpdatedAt ? new Date(lastUpdatedAt).toLocaleTimeString('zh-CN', { hour12: false }) : null;
 
@@ -189,7 +204,7 @@ export function AgentPanel({ shops }: AgentPanelProps) {
             <Users size={18} aria-hidden="true" />
             人工坐席
           </h2>
-          <p className={styles.subtitle}>查看坐席负载、实时队列与待处理升级工单</p>
+          <p className={styles.subtitle}>查看坐席负载、实时队列与待处理/已分配升级工单</p>
           <p
             className={[styles.dataStatus, dataStale && styles.dataStatusStale].filter(Boolean).join(' ')}
             role="status"
@@ -325,24 +340,28 @@ export function AgentPanel({ shops }: AgentPanelProps) {
           </Card>
 
           <Card className={styles.section}>
-            <h3 className={styles.sectionTitle}>升级队列（待处理 {escalations.length} 个）</h3>
+            <h3 className={styles.sectionTitle}>
+              升级工单（待处理 {pendingCount} · 已分配 {assignedCount}）
+            </h3>
             {!canAssign && (
               <p className={styles.capabilityNote} role="note">
                 当前版本暂未启用手动分配；你仍可确认问题后将工单标记为已解决。
               </p>
             )}
             {escalations.length > 0 ? (
-              <div className={styles.tableWrap} role="region" aria-label="待处理升级工单，可横向滚动" tabIndex={0}>
+              <div className={styles.tableWrap} role="region" aria-label="升级工单列表，可横向滚动" tabIndex={0}>
                 <table className={styles.table}>
                   <caption className={styles.tableCaption}>
-                    {selectedShopName ?? '当前店铺'}的待处理升级工单，共 {escalations.length} 个
+                    {selectedShopName ?? '当前店铺'}的待处理与已分配升级工单，共 {escalations.length} 个
                   </caption>
                   <thead>
                     <tr>
                       <th scope="col">ID</th>
                       <th scope="col">会话</th>
+                      <th scope="col">状态</th>
                       <th scope="col">优先级</th>
                       <th scope="col">原因</th>
+                      <th scope="col">负责坐席</th>
                       <th scope="col">时间</th>
                       <th scope="col">操作</th>
                     </tr>
@@ -354,7 +373,11 @@ export function AgentPanel({ shops }: AgentPanelProps) {
                           ? `${escalation.sessionId.slice(0, 12)}…`
                           : escalation.sessionId;
                       const isResolving = resolvingId === escalation.id;
-                      const assignDisabled = !canAssign || availableAgents.length === 0 || isResolving;
+                      const isPending = escalation.status === 'pending';
+                      const assignedAgentName = escalation.assignedAgentId
+                        ? agents.find((item) => item.id === escalation.assignedAgentId)?.name
+                        : undefined;
+                      const assignDisabled = !isPending || !canAssign || availableAgents.length === 0 || isResolving;
 
                       return (
                         <tr key={escalation.id} aria-busy={isResolving || undefined}>
@@ -365,12 +388,24 @@ export function AgentPanel({ shops }: AgentPanelProps) {
                             {shortSessionId}
                           </td>
                           <td>
+                            <span
+                              className={`${styles.statusBadge} ${
+                                isPending ? styles.escalationPending : styles.escalationAssigned
+                              }`}
+                            >
+                              {isPending ? '待分配' : '已分配'}
+                            </span>
+                          </td>
+                          <td>
                             <span className={`${styles.priorityBadge} ${PRIORITY_CLASSES[escalation.priority]}`}>
                               {PRIORITY_LABELS[escalation.priority]}
                             </span>
                           </td>
                           <td className={styles.reasonCell} title={escalation.reason}>
                             {escalation.reason}
+                          </td>
+                          <td className={styles.muted}>
+                            {assignedAgentName ?? escalation.assignedAgentId ?? '未分配'}
                           </td>
                           <td className={styles.muted}>{formatRelative(escalation.createdAt)}</td>
                           <td>
@@ -384,11 +419,13 @@ export function AgentPanel({ shops }: AgentPanelProps) {
                                 }}
                                 disabled={assignDisabled}
                                 title={
-                                  !canAssign
-                                    ? '当前版本暂未启用人工分配'
-                                    : availableAgents.length === 0
-                                      ? '暂无可分配的空闲客服'
-                                      : undefined
+                                  !isPending
+                                    ? '工单已分配，无需重复分配'
+                                    : !canAssign
+                                      ? '当前版本暂未启用人工分配'
+                                      : availableAgents.length === 0
+                                        ? '暂无可分配的空闲客服'
+                                        : undefined
                                 }
                                 aria-label={`分配升级工单 #${escalation.id}`}
                               >
@@ -415,7 +452,7 @@ export function AgentPanel({ shops }: AgentPanelProps) {
               </div>
             ) : (
               <div className={styles.empty} role="status">
-                当前店铺在“待处理”筛选条件下暂无升级工单。
+                当前店铺暂无待处理或已分配升级工单。
               </div>
             )}
           </Card>
@@ -516,7 +553,12 @@ export function AgentPanel({ shops }: AgentPanelProps) {
         title="确认解决升级工单"
         message={
           resolveTarget
-            ? `工单 #${resolveTarget.id}（会话 ${resolveTarget.sessionId}）将从待处理列表移除。请确认买家问题已经处理完成。`
+            ? resolveTarget.status === 'assigned' && resolveTarget.assignedAgentId
+              ? `工单 #${resolveTarget.id}（会话 ${resolveTarget.sessionId}）已分配给 ${
+                  agents.find((item) => item.id === resolveTarget.assignedAgentId)?.name ??
+                  resolveTarget.assignedAgentId
+                }。确认解决后将释放该坐席的活跃会话额度。`
+              : `工单 #${resolveTarget.id}（会话 ${resolveTarget.sessionId}）将从待处理列表移除。请确认买家问题已经处理完成。`
             : ''
         }
         confirmLabel="确认解决"

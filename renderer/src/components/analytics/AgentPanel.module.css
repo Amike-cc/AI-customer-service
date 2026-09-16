@@ -168,6 +168,16 @@
   background: var(--bg-tertiary);
 }
 
+.escalationPending {
+  color: var(--info);
+  background: var(--info-dim);
+}
+
+.escalationAssigned {
+  color: var(--warning);
+  background: var(--warning-dim);
+}
+
 .priorityUrgent {
   color: var(--danger);
   background: var(--danger-dim);
