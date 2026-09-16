@@ -1,6 +1,6 @@
 {
   "name": "feige-ai-customer-service",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "支持飞鸽、拼多多、快手和微信小店的桌面端 AI 客服系统",
   "main": "dist/electron/main.js",
   "scripts": {

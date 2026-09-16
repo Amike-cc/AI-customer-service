@@ -7,7 +7,7 @@
 
 app:
   name: 飞鸽AI客服
-  version: 2.0.0
+  version: 2.0.1
   log_level: info
   max_shops: 39
   data_dir: ./data
