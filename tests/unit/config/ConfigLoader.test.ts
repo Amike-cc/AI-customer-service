@@ -5,12 +5,20 @@ import os from 'os';
 
 describe('ConfigLoader', () => {
   it('loads production array overrides and keeps night throttling disabled', async () => {
-    const config = await ConfigLoader.load(path.resolve('config'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'config-loader-production-'));
+    try {
+      await fs.copyFile(path.resolve('config/default.yaml'), path.join(dir, 'default.yaml'));
+      await fs.copyFile(path.resolve('config/production.yaml.example'), path.join(dir, 'production.yaml'));
 
-    expect(config.ratelimit.enabled).toBe(false);
-    expect(config.ratelimit.night_factor).toBe(1);
-    expect(config.ratelimit.night_hours).toEqual([0, 0]);
-    expect(config.ratelimit.per_shop_per_minute).toBe(8);
+      const config = await ConfigLoader.load(dir);
+
+      expect(config.ratelimit.enabled).toBe(false);
+      expect(config.ratelimit.night_factor).toBe(1);
+      expect(config.ratelimit.night_hours).toEqual([0, 0]);
+      expect(config.ratelimit.per_shop_per_minute).toBe(8);
+    } finally {
+      fs.removeSync(dir);
+    }
   });
 
   it('配置无效时抛出异常而不是终止进程', async () => {

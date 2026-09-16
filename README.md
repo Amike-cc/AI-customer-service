@@ -122,6 +122,7 @@ AIkefu/
 ├── config/                     # 配置文件
 │   ├── default.yaml            # 默认配置
 │   ├── production.yaml         # 可选的本机生产覆盖配置（不提交）
+│   ├── production.yaml.example # 脱敏的生产覆盖示例
 │   ├── .env.example            # 环境变量示例
 │   ├── prompt/                 # Prompt 模板
 │   ├── dict/                   # 词库（敏感词/地址关键词）

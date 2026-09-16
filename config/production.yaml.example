@@ -1,0 +1,70 @@
+# ============================================================
+# 飞鸽AI客服生产配置
+# 覆盖 config/default.yaml 中的默认值
+# 仅覆盖与默认值不同的生产环境参数
+# ============================================================
+
+app:
+  log_level: info
+  max_shops: 39
+
+platforms:
+  feige:
+    web_url: "https://im.jinritemai.com/pc_seller_v2/main/workspace"
+
+deepseek:
+  timeout_ms: 30000
+  retry_count: 5
+  retry_interval_ms: 2000
+  context_rounds: 5
+
+logging:
+  level: debug
+  retention_days: 90
+  rotation_max_bytes: 209715200
+  audit_retention_days: 365
+
+monitor:
+  metrics_retention_days: 30
+  alert:
+    dedup_window_ms: 600000
+
+ratelimit:
+  enabled: false
+  per_shop_per_minute: 8
+  night_factor: 1.0
+  night_hours: [0, 0]
+  burst_allowance: 2
+
+cache:
+  ttl_ms: 7200000
+  max_entries_per_shop: 2000
+  max_entries_global: 20000
+
+scheduler:
+  token_bucket:
+    daily_budget_yuan: 100
+    reserve_ratio: 0.15
+  budget:
+    global_daily_yuan: 200
+    global_monthly_yuan: 5000
+    per_shop_daily_yuan: 10
+    warn_threshold: 0.8
+    critical_threshold: 1.0
+
+security:
+  api_key_store: dpapi
+  audit_all_replies: true
+  reply_output_check: true
+  max_consecutive_sensitive: 1
+
+human_simulator:
+  reply_delay:
+    default:
+      min_ms: 800
+      max_ms: 3000
+  ai_reply_delay_max_ms: 1500
+
+silent_wait:
+  duration_ms: 90000
+  max_consecutive: 3
