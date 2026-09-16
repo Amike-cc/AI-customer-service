@@ -92,7 +92,9 @@ jobs:
 
   # 安装包构建单独成 job：耗时较长，且下载 Electron 二进制失败时不影响主测试 job 结论
   pack:
-    runs-on: windows-latest
+    # windows-latest 已切换到 VS 18，当前 node-gyp 版本无法识别该版本；
+    # 固定 VS 2022 保证 better-sqlite3 的 Electron ABI 重建稳定。
+    runs-on: windows-2022
     needs: test
     steps:
       - name: 检出代码
@@ -118,6 +120,7 @@ jobs:
         env:
           # 跳过代码签名，CI 无证书；正式发布需在受控环境签名
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+          GYP_MSVS_VERSION: '2022'
 
       - name: 上传安装包 artifact
         if: always()
