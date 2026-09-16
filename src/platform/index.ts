@@ -1,0 +1,2 @@
+export type { PlatformId, PlatformSelectors, PlatformLoginDetection, PlatformDefinition } from './types';
+export { getPlatform, getAllPlatforms, getPlatformSelectors, getPlatformLoginDetection } from './registry';

@@ -1,0 +1,24 @@
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), transform var(--transition-base), background var(--transition-base);
+}
+
+.card[role="button"] {
+  cursor: pointer;
+}
+
+.card[role="button"]:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow-sm);
+}
+
+.hover:hover {
+  background: var(--bg-elevated);
+  border-color: var(--accent-soft);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}

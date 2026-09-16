@@ -1,0 +1,450 @@
+# ============================================================
+# 飞鸽AI客服默认配置
+# 随版本发布，请勿直接修改
+# 业务定制请使用 config/production.yaml 覆盖
+# 详见 docs/开发文档-综合版.md 的“配置规范”章节
+# ============================================================
+
+app:
+  name: 飞鸽AI客服
+  version: 2.0.0
+  log_level: info
+  max_shops: 39
+  data_dir: ./data
+  single_instance: true
+  backup_retention_count: 30
+
+vision:
+  enabled: true
+  python_path: ./vision/venv/Scripts/python.exe
+  script_path: ./vision/vision_service.py
+  start_timeout_ms: 60000
+  request_timeout_ms: 2000
+  poll_interval_ms: 2000
+  max_restart_per_hour: 5
+
+ocr:
+  lang: ch
+  use_angle_cls: false
+  use_gpu: false
+  max_text_length: 200
+  text_clean_rules:
+    - remove_empty_lines
+    - collapse_spaces
+    - strip_punctuation_end
+
+cdp:
+  port_range: [9222, 9260]
+  startup_args:
+    - --remote-debugging-port={port}
+    - --remote-allow-origins=*
+  startup_delay_ms: 3000
+  max_retries: 10
+  retry_interval_ms: 1000
+  poll:
+    min_ms: 200
+    max_ms: 2000
+    idle_increase_ms: 50
+    suppress_ms: 5000
+    background_ms: 3000
+  heartbeat:
+    interval_ms: 10000
+    timeout_ms: 15000
+    failures_threshold: 2
+  recover_probe:
+    interval_ms: 30000
+    cooldown_after_failure_ms: 60000
+    verify_count: 3
+    verify_interval_ms: 5000
+    verify_timeout_ms: 30000
+  client_keepalive:
+    interval_ms: 10000
+    restart_max_per_hour: 3
+    stuck_detection:
+      cpu_threshold_percent: 5
+      duration_ms: 60000
+
+deepseek:
+  api_url: https://api.deepseek.com/v1/chat/completions
+  model: deepseek-v4-flash
+  temperature: 0.2
+  max_tokens: 1024
+  top_p: 0.9
+  timeout_ms: 8000
+  stream: false
+  retry_count: 3
+  retry_interval_ms: 1200
+  context_rounds: 3
+  context_idle_clear_ms: 300000
+  fallback_response: 抱歉，系统繁忙，请稍后再试或联系人工客服
+  scenarios:
+    after_sales:
+      max_tokens: 1024
+      temperature: 0.1
+      keywords: [退货, 退款, 换货, 维修, 投诉, 坏了, 破了, 质量问题, 不满意, 售后]
+    product_comparison:
+      max_tokens: 1536
+      temperature: 0.3
+      keywords: [对比, 区别, 差异, 哪个好, 推荐, 哪款]
+    logistics:
+      max_tokens: 512
+      temperature: 0.1
+      keywords: [发货, 物流, 快递, 什么时候到, 几天到, 运费, 包邮, 顺丰]
+    sizing:
+      max_tokens: 512
+      temperature: 0.2
+      keywords: [尺码, 尺寸, 多大, 多大码, 推荐码数, XL, L码, M码]
+    pre_sales:
+      max_tokens: 800
+      temperature: 0.7
+      keywords: [买, 下单, 优惠, 活动, 券, 推荐, 新人, 首单, 满减, 折扣]
+    purchase_intent:
+      max_tokens: 600
+      temperature: 0.6
+      keywords: [付款, 怎么买, 购买, 拍下, 现货]
+  prompt_template: ./config/prompt/customer-service.md
+  sensitive_words_dict: ./config/dict/sensitive-words.txt
+  balance:
+    warn_threshold_yuan: 10
+    critical_threshold_yuan: 2
+    check_interval_ms: 3600000
+
+ratelimit:
+  enabled: false
+  per_shop_per_minute: 10
+  night_factor: 1.0
+  night_hours: [0, 0]
+  burst_allowance: 3
+  burst_window_ms: 10000
+
+cache:
+  ttl_ms: 3600000
+  max_entries_per_shop: 1000
+  max_entries_global: 10000
+  invalidate_on_product_update: true
+  semantic_enabled: true
+  semantic_threshold: 0.7
+
+human_simulator:
+  reply_delay:
+    default:
+      min_ms: 500
+      max_ms: 2000
+    peak_hours:
+      hours: [9, 18]
+      min_ms: 500
+      max_ms: 1500
+    night_hours:
+      hours: [0, 7]
+      min_ms: 1000
+      max_ms: 4000
+  typing_speed_min_cpm: 120
+  typing_speed_max_cpm: 220
+  segment_pause:
+    min_chars: 3
+    max_chars: 8
+    min_ms: 200
+    max_ms: 600
+  cursor_jitter: true
+  typing_mistake_rate: 0.005
+  ai_reply_delay_max_ms: 1500
+
+silent_wait:
+  duration_ms: 60000
+  max_consecutive: 3
+
+product:
+  cache_index_in_memory: true
+  match_algorithm: hybrid
+  fuzzy_threshold: 0.7
+  keywords_weight: 0.4
+  fuzzy_match_weight: 0.6
+  fallback_to_human: true
+  auto_sync:
+    enabled: false
+    cron: "0 3 * * *"
+    api_url: ""
+
+logging:
+  level: debug
+  retention_days: 30
+  rotation_max_bytes: 104857600
+  audit_retention_days: 180
+  sanitize:
+    phone: true
+    id_card: true
+    email: true
+    bank_card: true
+    address: true
+    address_dict: ./config/dict/address-keywords.txt
+
+monitor:
+  metrics_flush_interval_ms: 10000
+  metrics_retention_days: 7
+  alert:
+    feishu_webhook: ""
+    feishu_secret: ""
+    sms_access_key: ""
+    sms_access_secret: ""
+    sms_phone_numbers: []
+    dedup_window_ms: 300000
+    maintenance_windows:
+      - start: "03:00"
+        end: "04:00"
+        level: warn
+
+security:
+  api_key_store: dpapi
+  api_key_env_var: DEEPSEEK_API_KEY
+  audit_all_replies: true
+  reply_output_check: true
+  max_consecutive_sensitive: 1
+
+platforms:
+  feige:
+    web_url: "https://im.jinritemai.com/pc_seller_v2/main/workspace"
+  pinduoduo:
+    web_url: "https://mms.pinduoduo.com/chat-merchant/index.html#/"
+  kuaishou:
+    web_url: "https://im.kwaixiaodian.com/workbench"
+  weixin:
+    web_url: "https://store.weixin.qq.com/shop/kf"
+
+# ============================================================
+# 平台级别配置覆盖
+# 允许为每个平台独立设置 AI 模型、限流、人工模拟等参数
+# 未配置的字段使用全局默认值
+# ============================================================
+platform_overrides:
+  # 飞鸽（抖音）平台专属配置
+  feige:
+    deepseek:
+      model: "deepseek-v4-flash"
+      # temperature: 0.7
+      # max_tokens: 1024
+      # fallback_response: "抱歉，我暂时无法回复，请稍后再试。"
+    ratelimit:
+      per_shop_per_minute: 10
+      # burst_allowance: 2
+      # night_factor: 0.5
+    human_simulator:
+      typing_speed_min_cpm: 80
+      typing_speed_max_cpm: 120
+      # ai_reply_delay_max_ms: 1500
+  # 拼多多平台专属配置
+  pinduoduo:
+    deepseek:
+      model: "deepseek-v4-flash"
+      # temperature: 0.7
+      # max_tokens: 1024
+    ratelimit:
+      per_shop_per_minute: 8
+    human_simulator:
+      typing_speed_min_cpm: 70
+      typing_speed_max_cpm: 110
+  # 快手平台专属配置
+  kuaishou:
+    deepseek:
+      model: "deepseek-v4-flash"
+    ratelimit:
+      per_shop_per_minute: 8
+    human_simulator:
+      typing_speed_min_cpm: 70
+      typing_speed_max_cpm: 110
+  # 微信小店平台专属配置
+  weixin:
+    deepseek:
+      model: "deepseek-v4-flash"
+    ratelimit:
+      per_shop_per_minute: 6
+    human_simulator:
+      typing_speed_min_cpm: 60
+      typing_speed_max_cpm: 100
+
+# ============================================================
+# Multi-Agent 集群配置
+# ============================================================
+agents:
+  enabled: true
+  list:
+    - id: after_sales
+      scenario: after_sales
+      keywords: [退货, 退款, 换货, 维修, 投诉, 坏了, 破了, 质量问题, 不满意, 售后]
+      preferred_tier: tier3
+      priority: 90
+    - id: logistics
+      scenario: logistics
+      keywords: [发货, 物流, 快递, 什么时候到, 几天到, 运费, 包邮, 顺丰]
+      preferred_tier: tier2
+      priority: 70
+    - id: product_expert
+      scenario: product_comparison
+      keywords: [对比, 区别, 差异, 哪个好, 推荐, 哪款, 尺码, 尺寸, XL, L码, M码]
+      preferred_tier: tier3
+      priority: 80
+    - id: pre_sales
+      scenario: pre_sales
+      keywords: [买, 下单, 优惠, 活动, 券, 推荐, 新人, 首单, 满减, 折扣]
+      preferred_tier: tier3
+      priority: 60
+    - id: general
+      scenario: general
+      keywords: []
+      preferred_tier: tier2
+      priority: 50
+
+# ============================================================
+# 混合模型网关配置
+# ============================================================
+gateway:
+  enabled: true
+  # 默认主用 provider（非级联场景下的 LLM 入口；级联场景下按 tier 自动选择）
+  default_provider: deepseek
+  cascade:
+    enabled: true
+    confidence_thresholds:
+      tier1: 0.75
+      tier2: 0.70
+      tier3: 0.60
+    max_depth: 3
+  providers:
+    # DeepSeek — 默认主用（OpenAI 兼容 API）
+    deepseek:
+      enabled: true
+      tier: tier3
+    # 通义千问 — OpenAI 兼容 API
+    qwen:
+      enabled: false
+      tier: tier2
+      api_url: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
+      api_key_env_var: QWEN_API_KEY
+      model: qwen-plus
+      timeout_ms: 8000
+    # OpenAI GPT — 需海外网络
+    openai:
+      enabled: false
+      tier: tier3
+      api_url: "https://api.openai.com/v1/chat/completions"
+      api_key_env_var: OPENAI_API_KEY
+      model: gpt-4o-mini
+      timeout_ms: 30000
+    # Anthropic Claude — 自定义 Messages API
+    claude:
+      enabled: false
+      tier: tier3
+      api_url: "https://api.anthropic.com/v1/messages"
+      api_key_env_var: ANTHROPIC_API_KEY
+      model: claude-3-5-sonnet-20241022
+      timeout_ms: 30000
+      anthropic_version: "2023-06-01"
+    # Moonshot Kimi — OpenAI 兼容 API，超长上下文
+    kimi:
+      enabled: false
+      tier: tier2
+      api_url: "https://api.moonshot.cn/v1/chat/completions"
+      api_key_env_var: MOONSHOT_API_KEY
+      model: moonshot-v1-8k
+      timeout_ms: 30000
+    # 智谱 GLM — OpenAI 兼容 API
+    glm:
+      enabled: false
+      tier: tier2
+      api_url: "https://open.bigmodel.cn/api/paas/v4/chat/completions"
+      api_key_env_var: ZHIPU_API_KEY
+      model: glm-4-flash
+      timeout_ms: 30000
+    # 百川 Baichuan — OpenAI 兼容 API
+    baichuan:
+      enabled: false
+      tier: tier2
+      api_url: "https://api.baichuan-ai.com/v1/chat/completions"
+      api_key_env_var: BAICHUAN_API_KEY
+      model: Baichuan4-Turbo
+      timeout_ms: 30000
+    # 注：本地模型 Ollama 已于 2026-07 移除（用户明确不需要本地模型）
+
+# ============================================================
+# 资源动态调度配置
+# ============================================================
+scheduler:
+  enabled: true
+  token_bucket:
+    daily_budget_yuan: 50
+    reserve_ratio: 0.2
+  budget:
+    global_daily_yuan: 100
+    global_monthly_yuan: 2000
+    per_shop_daily_yuan: 5
+    warn_threshold: 0.8
+    critical_threshold: 1.0
+  default_priority: normal
+
+learning:
+  enabled: true
+  run_interval_ms: 21600000
+  lookback_hours: 24
+  min_quality_threshold: 0.75
+  min_samples_for_pattern: 3
+  semantic_threshold: 0.8
+  pattern_decay_days: 30
+  max_patterns_per_shop: 500
+  weights:
+    confidence: 0.30
+    latency: 0.15
+    structure: 0.15
+    safety: 0.20
+    feedback: 0.20
+
+# 意图识别引擎
+intent:
+  enabled: true
+  complexity_threshold: 0.6
+  confidence_threshold: 0.5
+  history_weight: 0.3
+
+# 客服商品推荐（历史配置键 conversion 保持兼容）
+conversion:
+  enabled: true
+  max_recommendations: 3
+  cross_sell_threshold: 0.4
+  recommendation_cooldown_ms: 300000
+
+# 人工协作增强
+human_collab:
+  enabled: true
+  queue_poll_interval_ms: 10000
+  max_wait_ms: 300000
+  default_max_chats: 5
+  auto_transfer_on_escalation: true
+
+# ============================================================
+# 非工作时间策略
+# 工作时间外收到消息时自动回复预设话术并暂存消息，
+# 工作时间开始后按 FIFO 顺序批量续处理。
+# 启用前请确认 workDays/workStart/workEnd 符合客服排班。
+# ============================================================
+work_time:
+  enabled: false
+  timezone: Asia/Shanghai
+  # 工作日：1=周一 ... 7=周日
+  workDays: [1, 2, 3, 4, 5]
+  workStart: "09:00"
+  workEnd: "18:00"
+  offHoursReply: "亲，当前是非工作时间（{start}-{end}），我们会暂存您的消息，工作时间会第一时间为您处理~"
+  pendingProcessBatchSize: 10
+  pendingProcessIntervalMs: 30000
+
+# ============================================================
+# 跨会话买家记忆
+# 让 AI 像真人客服一样认得老顾客：记住历史咨询/投诉/转化/偏好，回复时自然引用。
+# 买家标识用 (shopId, platform, buyerName) 复合键（当前无平台 user_id）。
+# ============================================================
+buyer:
+  enabled: true
+  profileCacheTtlMs: 300000
+  historyLookbackLimit: 200
+  maxContextChars: 500
+  vipConsultationThresholds:
+    silver: 5
+    gold: 20
+    diamond: 50

@@ -1,0 +1,172 @@
+# 敏感词库
+# 格式：词语|类别|处理方式
+# 处理方式：block(拦截不发送) | warn(告警但发送) | replace(替换为***)
+# 详见 docs/21-进程模型与运行细节.md §21.6
+
+# ========== ad_violation ==========
+最便宜|ad_violation|block
+国家级|ad_violation|block
+第一品牌|ad_violation|block
+全网最低|ad_violation|block
+绝无仅有|ad_violation|block
+顶级|ad_violation|block
+极品|ad_violation|block
+最好|ad_violation|block
+最大|ad_violation|block
+最先|ad_violation|block
+最先进|ad_violation|block
+唯一|ad_violation|block
+首个|ad_violation|block
+独家|ad_violation|block
+世界第一|ad_violation|block
+全国第一|ad_violation|block
+史无前例|ad_violation|block
+前无古人|ad_violation|block
+万能|ad_violation|block
+永久|ad_violation|block
+无敌|ad_violation|block
+巅峰|ad_violation|block
+之王|ad_violation|block
+冠军|ad_violation|warn
+
+# ========== promise_violation ==========
+一定|promise_violation|warn
+保证|promise_violation|warn
+绝对|promise_violation|warn
+百分之百|promise_violation|warn
+万无一失|promise_violation|warn
+承诺|promise_violation|warn
+包好|promise_violation|warn
+肯定|promise_violation|warn
+必定|promise_violation|warn
+彻底|promise_violation|warn
+完全|promise_violation|warn
+根治|promise_violation|block
+治愈|promise_violation|block
+疗效|promise_violation|block
+
+# ========== platform_violation ==========
+刷单|platform_violation|block
+好评返现|platform_violation|block
+差评删除|platform_violation|block
+虚假发货|platform_violation|block
+刷销量|platform_violation|block
+刷好评|platform_violation|block
+刷信誉|platform_violation|block
+空包|platform_violation|block
+炒信|platform_violation|block
+信用炒作|platform_violation|block
+
+# ========== medical_violation ==========
+包治百病|medical_violation|block
+药到病除|medical_violation|block
+延年益寿|medical_violation|block
+抗癌|medical_violation|block
+防癌|medical_violation|block
+治疗|medical_violation|warn
+疗效|medical_violation|block
+康复|medical_violation|warn
+痊愈|medical_violation|block
+根除|medical_violation|block
+神药|medical_violation|block
+秘方|medical_violation|block
+偏方|medical_violation|warn
+
+# ========== cosmetic_violation ==========
+速效|cosmetic_violation|block
+特效|cosmetic_violation|block
+换肤|cosmetic_violation|block
+去除皱纹|cosmetic_violation|block
+十天美白|cosmetic_violation|block
+一洗白|cosmetic_violation|block
+减肥|cosmetic_violation|warn
+塑身|cosmetic_violation|warn
+丰胸|cosmetic_violation|block
+
+# ========== food_violation ==========
+纯天然|food_violation|warn
+无添加|food_violation|warn
+零添加|food_violation|warn
+绿色食品|food_violation|warn
+有机|food_violation|warn
+保健|food_violation|warn
+养生|food_violation|warn
+壮阳|food_violation|block
+催情|food_violation|block
+
+# ========== price_fraud ==========
+跳楼价|price_fraud|block
+亏本|price_fraud|warn
+清仓大甩卖|price_fraud|block
+仅此一天|price_fraud|block
+最后一天|price_fraud|warn
+限时抢购|price_fraud|warn
+原价|price_fraud|warn
+
+# ========== external_violation ==========
+微信|external_violation|block
+支付宝|external_violation|block
+线下|external_violation|block
+加微信|external_violation|block
+加V信|external_violation|block
+微信号|external_violation|block
+扫码|external_violation|warn
+二维码|external_violation|warn
+私聊|external_violation|warn
+线下交易|external_violation|block
+货到付款|external_violation|warn
+
+# ========== electronics_violation ==========
+防辐射|electronics_violation|warn
+抗辐射|electronics_violation|warn
+净化空气|electronics_violation|warn
+杀菌|electronics_violation|block
+除菌|electronics_violation|block
+抗菌|electronics_violation|warn
+抑菌|electronics_violation|warn
+防霉|electronics_violation|warn
+驱蚊|electronics_violation|warn
+防蚊|electronics_violation|warn
+除甲醛|electronics_violation|block
+去甲醛|electronics_violation|block
+负离子|electronics_violation|warn
+远红外|electronics_violation|warn
+磁疗|electronics_violation|block
+
+# ========== apparel_violation ==========
+瘦身|apparel_violation|warn
+塑形|apparel_violation|warn
+塑型|apparel_violation|warn
+免烫|apparel_violation|warn
+抗皱|apparel_violation|warn
+阻燃|apparel_violation|warn
+防紫外线|apparel_violation|warn
+防辐射服|apparel_violation|block
+磁石保健|apparel_violation|block
+发热内衣|apparel_violation|warn
+
+# ========== baby_violation ==========
+促智|baby_violation|block
+开发智力|baby_violation|block
+增强免疫|baby_violation|block
+提高智力|baby_violation|block
+开发大脑|baby_violation|block
+激活大脑|baby_violation|block
+启智|baby_violation|block
+益智|baby_violation|warn
+聪明|baby_violation|warn
+早教|baby_violation|warn
+促进发育|baby_violation|block
+促进生长|baby_violation|block
+
+# ========== financial_violation ==========
+保本|financial_violation|block
+保息|financial_violation|block
+稳赚|financial_violation|block
+零风险|financial_violation|block
+高收益|financial_violation|block
+无风险|financial_violation|block
+稳赚不赔|financial_violation|block
+绝对盈利|financial_violation|block
+翻倍|financial_violation|warn
+暴富|financial_violation|block

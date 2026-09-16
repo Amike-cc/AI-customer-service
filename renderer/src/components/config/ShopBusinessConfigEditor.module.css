@@ -1,0 +1,428 @@
+.editorBody {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  padding: var(--space-2) 0;
+}
+
+.formGroup {
+  min-width: 0;
+  margin-bottom: var(--space-4);
+}
+
+.formGroup > label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-1);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.hint {
+  margin-top: var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.error {
+  margin-top: var(--space-1);
+  color: var(--danger);
+  font-size: var(--font-size-xs);
+}
+
+.switchRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-2) 0;
+}
+
+.switchCopy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.switchLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.switchHint {
+  margin-top: 2px;
+}
+
+.switch {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  flex: 0 0 auto;
+  padding: 0;
+  background: var(--border-strong);
+  border: 0;
+  border-radius: var(--radius-full);
+  box-shadow: inset 0 0 0 1px var(--border);
+  transition: background var(--transition-base), box-shadow var(--transition-base);
+}
+
+.switch:hover {
+  background: var(--text-muted);
+}
+
+.switch:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.switch.on {
+  background: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.switch.on:hover {
+  background: var(--accent-hover);
+}
+
+.switch::after {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  content: '';
+  background: var(--text-on-accent);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--transition-base);
+}
+
+.switch.on::after {
+  transform: translateX(18px);
+}
+
+.checkboxGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  gap: var(--space-2);
+  min-width: 0;
+  margin-top: var(--space-2);
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-2);
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  transition: color var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.checkboxItem:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+  border-color: var(--border-focus);
+}
+
+.checkboxItem:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.checkboxItem input {
+  flex: 0 0 auto;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.conditionRow {
+  min-width: 0;
+  margin-top: var(--space-2);
+}
+
+.fieldLabel {
+  display: block;
+  margin-bottom: var(--space-1);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.saveStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 18px;
+  margin-top: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.saveStatus.saved {
+  color: var(--success);
+}
+
+.saveStatus.saving {
+  color: var(--accent);
+}
+
+.saveStatus.error {
+  color: var(--danger);
+}
+
+.emptyState {
+  padding: var(--space-6) var(--space-4);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.agentMappingTable {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  margin-top: var(--space-2);
+}
+
+.agentMappingRow {
+  display: grid;
+  grid-template-columns: minmax(150px, 200px) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-3);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+}
+
+.agentRoleCell,
+.agentInputCell {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.agentRoleCell {
+  gap: 2px;
+}
+
+.agentRoleName {
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.agentRoleScene {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  overflow-wrap: anywhere;
+}
+
+.personaSection {
+  min-width: 0;
+  margin-top: var(--space-2);
+}
+
+.personaField {
+  min-width: 0;
+  margin-top: var(--space-3);
+}
+
+.personaField:first-child {
+  margin-top: 0;
+}
+
+.personaFieldLabel {
+  display: block;
+  margin: 0 0 var(--space-1);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.toneGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  gap: var(--space-2);
+  min-width: 0;
+  margin-top: var(--space-2);
+}
+
+.toneCard {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  color: inherit;
+  text-align: left;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  transition: color var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.toneCard:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-focus);
+}
+
+.toneCard:active {
+  transform: translateY(1px);
+}
+
+.toneCard:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.toneCard.toneCardActive,
+.toneCard.toneCardActive:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.toneCardName {
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.toneCardDesc {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.catchphraseTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  min-width: 0;
+  margin-top: var(--space-1);
+}
+
+.catchphraseTag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  max-width: 100%;
+  padding: 3px var(--space-2);
+  color: var(--text-secondary);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  overflow-wrap: anywhere;
+}
+
+.catchphraseRemove {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  padding: 0;
+  color: var(--text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-md);
+  line-height: 1;
+  transition: color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.catchphraseRemove:hover {
+  color: var(--danger);
+  background: var(--danger-dim);
+}
+
+.catchphraseRemove:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--danger-dim);
+}
+
+.personaTextarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 84px;
+  padding: var(--space-2) var(--space-3);
+  resize: vertical;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  line-height: 1.55;
+  transition: background var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.personaTextarea:hover {
+  border-color: var(--border-focus);
+}
+
+.personaTextarea:focus,
+.personaTextarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.charCount {
+  margin-top: var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  text-align: right;
+}
+
+@container (max-width: 460px) {
+  .agentMappingRow {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+
+  .checkboxGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .toneGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container (max-width: 330px) {
+  .switchRow {
+    align-items: flex-start;
+  }
+
+  .checkboxGrid,
+  .toneGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

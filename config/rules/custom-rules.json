@@ -1,0 +1,44 @@
+{
+  "rules": [
+    {
+      "name": "size_inquiry",
+      "pattern": "尺码|尺寸|多大|多大码|什么码",
+      "answer": "亲，商品详情页有详细尺码表哦，可以参考一下~如果有不清楚的可以告诉我们您的身高体重，我们帮您推荐合适的尺码。",
+      "priority": 75,
+      "enabled": true,
+      "source": "custom"
+    },
+    {
+      "name": "logistics_query",
+      "pattern": "物流|快递|单号|到哪了|到哪了|运送",
+      "answer": "亲，请在订单详情中查看是否已发货以及实时物流信息；若物流长时间未更新，请通过订单售后入口联系人工客服核实。",
+      "priority": 72,
+      "enabled": true,
+      "source": "custom"
+    },
+    {
+      "name": "return_exchange",
+      "pattern": "退货|退款|换货|退换|不想要了|质量问题|破损|错发|漏发|坏了|收到坏的|商品有问题|损坏|发错",
+      "answer": "亲，售后问题需要人工客服为您核实处理，我帮您转接人工客服，请稍等~",
+      "priority": 95,
+      "enabled": true,
+      "source": "custom"
+    },
+    {
+      "name": "coupon_discount",
+      "pattern": "优惠券|折扣|满减|活动|便宜点|优惠",
+      "answer": "亲，当前可用优惠请以商品详情页和结算页显示为准；优惠券是否可领取、能否叠加也以页面实际规则为准。",
+      "priority": 68,
+      "enabled": true,
+      "source": "custom"
+    },
+    {
+      "name": "expedite_shipping",
+      "pattern": "催发货|快发货|急|赶紧发货|能发货吗",
+      "answer": "亲，实际发货时间请以订单页显示为准；如已超过承诺发货时间，请通过订单入口联系人工客服催办。",
+      "priority": 71,
+      "enabled": true,
+      "source": "custom"
+    }
+  ]
+}

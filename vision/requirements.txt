@@ -1,0 +1,25 @@
+# 飞鸽AI客服视觉服务依赖
+# 详见 docs/技术选型决策记录.md §5.2
+# Python 3.10+
+#
+# 注意：PaddleOCR 3.x 与 2.x 的 predict() 返回结构不同（3.x 返回 OCRResult，
+# 含 rec_texts/rec_scores/rec_polys；2.x 返回 [[bbox, (text, conf)], ...]）。
+# vision_service.py 的 _normalize_ocr_items 同时兼容两者；升级或降级 PaddleOCR
+# 后必须运行 vision/selfcheck.py，确认识别仍然可用。
+
+# OpenCV 图像处理
+opencv-python>=4.8.0
+
+# PaddleOCR 文字识别
+# PaddlePaddle 3.x 的 PIR 执行器在 OneDNN/MKLDNN 后端下会抛
+# NotImplementedError（ConvertPirAttribute2RuntimeAttribute）；
+# vision_service.py 已显式传入 enable_mkldnn=False 规避。
+paddleocr>=2.7.0
+paddlepaddle>=2.6.0
+
+# Win32 API（窗口截图）
+pywin32>=306
+
+# 工具库
+numpy>=1.24.0
+pillow>=10.0.0

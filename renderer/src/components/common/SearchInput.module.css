@@ -1,0 +1,44 @@
+.search {
+  position: relative;
+  width: clamp(180px, 24vw, 280px);
+  max-width: 100%;
+}
+
+.input {
+  font-size: var(--font-size-sm);
+}
+
+.input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.inputWithClear {
+  padding-right: 34px;
+}
+
+.clearButton {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  transform: translateY(-50%);
+}
+
+.clearButton:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.clearButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}

@@ -1,0 +1,814 @@
+{
+  "templates": [
+    {
+      "id": "greeting_001",
+      "category": "greeting",
+      "scenario": "通用问候",
+      "content": "亲，您好！很高兴为您服务，请问有什么可以帮您？",
+      "tags": ["你好", "您好", "在吗", "客服"],
+      "priority": 100,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "greeting_002",
+      "category": "greeting",
+      "scenario": "活动期间问候",
+      "content": "亲，欢迎光临！大促活动期间咨询量大，客服会尽快为您解答，感谢耐心等待~",
+      "tags": ["活动", "大促", "618", "双11"],
+      "priority": 95,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "greeting_003",
+      "category": "greeting",
+      "scenario": "节日问候",
+      "content": "亲，节日快乐！很高兴为您服务，请问有什么可以帮到您？",
+      "tags": ["节日", "快乐", "新年", "中秋"],
+      "priority": 90,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "greeting_004",
+      "category": "greeting",
+      "scenario": "深夜咨询问候",
+      "content": "亲，您好！夜间值班客服为您服务，回复可能稍有延迟，请见谅哦~",
+      "tags": ["深夜", "晚上", "夜间"],
+      "priority": 85,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "greeting_005",
+      "category": "greeting",
+      "scenario": "老客户回访问候",
+      "content": "亲，欢迎回来！感谢再次光临，有什么可以为您效劳的吗？",
+      "tags": ["老客户", "回头客", "再次"],
+      "priority": 88,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "pre_sales_001",
+      "category": "pre_sales",
+      "scenario": "尺码推荐",
+      "content": "亲，建议您参考商品详情页的尺码表哦~您可以告诉我身高体重，我帮您推荐合适的尺码。【尺码表】在详情页向下滑动即可查看。",
+      "tags": ["尺码", "尺寸", "身高", "体重", "推荐"],
+      "priority": 85,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "pre_sales_002",
+      "category": "pre_sales",
+      "scenario": "材质咨询",
+      "content": "亲，商品材质信息请在详情页\"产品参数\"中查看哦~我们承诺所有商品均符合国家质量标准，材质安全环保。如有特殊材质需求请联系人工客服。",
+      "tags": ["材质", "材料", "面料", "成分"],
+      "priority": 80,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "pre_sales_003",
+      "category": "pre_sales",
+      "scenario": "价格说明",
+      "content": "亲，商品价格以页面显示为准哦~我们承诺价格透明，不议价。【当前优惠】请关注店铺活动和优惠券，下单更划算。如有大额采购需求请联系人工客服。",
+      "tags": ["价格", "多少钱", "便宜", "议价"],
+      "priority": 75,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "pre_sales_004",
+      "category": "pre_sales",
+      "scenario": "库存查询",
+      "content": "亲，商品库存以页面显示为准哦~显示\"有货\"即可直接下单。如显示\"无货\"，建议关注店铺等候补货通知，或联系人工客服咨询补货时间。",
+      "tags": ["库存", "有货", "现货", "补货"],
+      "priority": 78,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "pre_sales_005",
+      "category": "pre_sales",
+      "scenario": "商品对比",
+      "content": "亲，每款商品都有各自特色哦~建议您根据需求选择。【对比建议】请告诉我您的具体需求和使用场景，我帮您推荐最合适的款式。商品详情页也有详细参数对比，供您参考。",
+      "tags": ["对比", "区别", "哪个好", "推荐"],
+      "priority": 70,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "pre_sales_006",
+      "category": "pre_sales",
+      "scenario": "颜色选择",
+      "content": "亲，商品可选颜色请在详情页查看哦~【颜色选择】在商品页面的规格区域可以选择您喜欢的颜色。如某个颜色显示缺货，建议关注补货或联系人工客服咨询。",
+      "tags": ["颜色", "色系", "选择"],
+      "priority": 72,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "pre_sales_007",
+      "category": "pre_sales",
+      "scenario": "规格参数咨询",
+      "content": "亲，商品规格参数请在详情页\"产品参数\"中查看哦~如有具体参数疑问，请告诉我您想了解的内容，我帮您确认。",
+      "tags": ["规格", "参数", "配置", "容量"],
+      "priority": 68,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "pre_sales_008",
+      "category": "pre_sales",
+      "scenario": "使用方法咨询",
+      "content": "亲，商品使用方法请参考详情页的【使用说明】或附带的说明书哦~如有具体使用问题，请详细描述您遇到的情况，我帮您解答。",
+      "tags": ["使用", "用法", "操作", "安装"],
+      "priority": 65,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "pre_sales_009",
+      "category": "pre_sales",
+      "scenario": "正品保障",
+      "content": "亲，我们承诺所售商品均为正品哦~支持专柜验货，假一赔十。【正品保障】所有商品均来自官方授权渠道，请放心购买。如有疑问可联系人工客服核实。",
+      "tags": ["正品", "真伪", "假货", "验货"],
+      "priority": 82,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "pre_sales_010",
+      "category": "pre_sales",
+      "scenario": "商品推荐",
+      "content": "亲，您可以告诉我您的需求（如用途、预算、偏好），我来为您推荐合适的商品哦~也可以参考店铺首页的热销榜单，都是买家们的好评之选！",
+      "tags": ["推荐", "买什么", "爆款", "热销"],
+      "priority": 60,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "after_sales_001",
+      "category": "after_sales",
+      "scenario": "退货引导",
+      "content": "亲，售后问题需要人工客服为您核实处理，我帮您联系人工客服，请稍等~",
+      "tags": ["退货", "退款", "退钱", "不想要"],
+      "priority": 95,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "after_sales_002",
+      "category": "after_sales",
+      "scenario": "换货流程",
+      "content": "亲，换货问题需要人工客服为您核实处理，我帮您联系人工客服，请稍等~",
+      "tags": ["换货", "换码", "换颜色", "调换"],
+      "priority": 94,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "after_sales_003",
+      "category": "after_sales",
+      "scenario": "退款进度查询",
+      "content": "亲，售后进度需要人工核实您的订单，已为您联系人工客服，请稍候~",
+      "tags": ["退款进度", "退款到账", "退款查询", "审核"],
+      "priority": 96,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "after_sales_004",
+      "category": "after_sales",
+      "scenario": "质量问题处理",
+      "content": "亲，非常抱歉听到商品有质量问题！这类问题需要人工客服为您核实处理，我帮您联系人工客服，请稍等~",
+      "tags": ["质量", "破损", "损坏", "坏"],
+      "priority": 97,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "after_sales_005",
+      "category": "after_sales",
+      "scenario": "错发漏发处理",
+      "content": "亲，非常抱歉出现错发/漏发情况！我帮您联系人工客服核实处理，请稍等~",
+      "tags": ["错发", "漏发", "少发", "发错"],
+      "priority": 97,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "after_sales_006",
+      "category": "after_sales",
+      "scenario": "订单修改",
+      "content": "亲，订单修改和补发赔偿问题需要人工客服为您处理，我帮您联系人工客服，请稍等~",
+      "tags": ["修改订单", "改地址", "取消订单", "补发"],
+      "priority": 96,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "after_sales_007",
+      "category": "after_sales",
+      "scenario": "7天无理由退货说明",
+      "content": "亲，我们支持7天无理由退货哦~【退货流程】我的订单 → 申请退货 → 选择退货原因 → 等待审核。具体退货政策请以商品页面说明为准。",
+      "tags": ["7天", "无理由", "退货政策"],
+      "priority": 80,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "after_sales_008",
+      "category": "after_sales",
+      "scenario": "发票开具",
+      "content": "亲，我们支持电子发票哦~【开票流程】订单详情 → 申请开票 → 填写抬头信息。抬头信息需准确，一经开具无法更改。专票请联系人工客服处理。",
+      "tags": ["发票", "开票", "抬头", "税号"],
+      "priority": 73,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "logistics_001",
+      "category": "logistics",
+      "scenario": "发货时间",
+      "content": "亲，具体发货时间需要以订单详情和店铺当前承诺为准。您可以提供订单号，我帮您核实当前订单状态；未查询到订单结果前不会向您承诺固定发货或到货时间。",
+      "tags": ["发货", "什么时候", "几天", "多久"],
+      "priority": 75,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "logistics_002",
+      "category": "logistics",
+      "scenario": "物流查询",
+      "content": "亲，您可以在订单详情页查看实时物流信息。如需催件，请提供订单号；我会先尝试提交催件请求，并根据系统返回结果明确告知您是否提交成功。【物流查询】我的订单 → 查看物流。",
+      "tags": ["物流", "快递", "单号", "到哪了"],
+      "priority": 70,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "logistics_003",
+      "category": "logistics",
+      "scenario": "催件加急",
+      "content": "亲，需要先查询订单并提交催件请求。请提供订单号；只有系统确认提交成功后，我才会告知您已催件。若提交失败或暂时无法操作，我会如实说明并建议转人工跟进。",
+      "tags": ["催件", "催快递", "加急"],
+      "priority": 68,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "logistics_004",
+      "category": "logistics",
+      "scenario": "到货时间预估",
+      "content": "亲，到货时间需要结合收货地址、当前物流轨迹和承运方信息查询。请提供订单号或在订单详情查看预计送达时间；未取得物流结果前不承诺固定天数。",
+      "tags": ["到货", "什么时候到", "几天到"],
+      "priority": 65,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "logistics_005",
+      "category": "logistics",
+      "scenario": "运费说明",
+      "content": "亲，运费以结算页面显示为准哦~【包邮说明】部分商品满额包邮，具体以商品页面标识为准。偏远地区可能需要补运费差价，以下单页面实际显示为准。",
+      "tags": ["运费", "邮费", "包邮", "免邮"],
+      "priority": 60,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "logistics_006",
+      "category": "logistics",
+      "scenario": "物流丢失投诉",
+      "content": "亲，非常抱歉物流出现问题！这类情况需要人工客服为您核实处理，我帮您联系人工客服，请稍等~",
+      "tags": ["丢失", "没收到", "物流慢", "损坏"],
+      "priority": 95,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "logistics_007",
+      "category": "logistics",
+      "scenario": "支持快递公司",
+      "content": "亲，我们合作的快递公司包括中通、圆通、申通、韵达、顺丰等哦~具体发货快递以仓库分配为准，如有特殊要求请联系人工客服备注。",
+      "tags": ["中通", "圆通", "申通", "韵达", "顺丰"],
+      "priority": 55,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "activity_001",
+      "category": "activity",
+      "scenario": "活动咨询",
+      "content": "亲，当前活动以商品页面显示为准哦~【活动详情】请关注店铺首页和商品详情页。优惠券、满减等优惠可叠加使用，具体以结算页为准。",
+      "tags": ["活动", "优惠", "满减", "促销"],
+      "priority": 65,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "activity_002",
+      "category": "activity",
+      "scenario": "优惠券使用",
+      "content": "亲，优惠券可在【我的优惠券】中查看和使用哦~下单时在结算页选择可用优惠券即可。优惠券不可叠加使用，以使用规则为准。如有疑问请联系人工客服。",
+      "tags": ["优惠券", "券", "红包", "领券"],
+      "priority": 60,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "activity_003",
+      "category": "activity",
+      "scenario": "满减活动说明",
+      "content": "亲，满减活动以商品页面显示为准哦~满足条件后系统会自动减免。满减可与优惠券叠加使用（具体以活动规则为准），建议下单前确认结算页金额。",
+      "tags": ["满减", "满赠", "活动"],
+      "priority": 58,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "activity_004",
+      "category": "activity",
+      "scenario": "赠品咨询",
+      "content": "亲，赠品以商品页面活动说明为准哦~赠品数量有限，送完即止。如有赠品相关问题，请联系人工客服核实。",
+      "tags": ["赠品", "满赠", "送礼"],
+      "priority": 55,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "activity_005",
+      "category": "activity",
+      "scenario": "会员权益",
+      "content": "亲，会员体系以店铺活动为准哦~【会员权益】通常包含专属折扣、积分兑换、生日礼遇等。积分可在下单时抵扣，具体规则请关注店铺会员中心页面。",
+      "tags": ["会员", "积分", "等级", "VIP"],
+      "priority": 50,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "activity_006",
+      "category": "activity",
+      "scenario": "支付方式",
+      "content": "亲，我们支持支付宝、微信支付、银行卡等多种支付方式哦~【分期付款】支持花呗分期和信用卡分期。具体支付方式以下单页面显示为准。",
+      "tags": ["支付", "付款", "花呗", "分期", "信用卡"],
+      "priority": 52,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "complaint_001",
+      "category": "complaint",
+      "scenario": "投诉安抚",
+      "content": "亲，非常抱歉给您带来不好的体验！这类问题需要人工客服为您处理，我帮您联系人工客服，请稍等~",
+      "tags": ["投诉", "差评", "曝光", "举报"],
+      "priority": 97,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "complaint_002",
+      "category": "complaint",
+      "scenario": "差评挽回",
+      "content": "亲，非常抱歉让您不满意！您的反馈对我们很重要，我帮您联系人工客服，我们会尽全力为您解决问题，请稍等~",
+      "tags": ["差评", "不满意", "失望"],
+      "priority": 96,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "complaint_003",
+      "category": "complaint",
+      "scenario": "道歉话术",
+      "content": "亲，真的很抱歉给您带来困扰！我们已经记录了您的问题，正在为您联系人工客服处理，请稍等片刻~",
+      "tags": ["抱歉", "对不起", "道歉"],
+      "priority": 95,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "complaint_004",
+      "category": "complaint",
+      "scenario": "纠纷升级处理",
+      "content": "亲，非常理解您的心情！这类纠纷问题我们会优先处理，已为您联系人工客服，主管会亲自跟进，请稍等~",
+      "tags": ["纠纷", "维权", "12315", "消费者"],
+      "priority": 98,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "complaint_005",
+      "category": "complaint",
+      "scenario": "客服态度投诉",
+      "content": "亲，非常抱歉客服态度让您不满意！我们会严肃处理，已为您联系主管客服跟进，请稍等~",
+      "tags": ["态度", "投诉客服", "服务差"],
+      "priority": 98,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "closing_001",
+      "category": "closing",
+      "scenario": "通用结束语",
+      "content": "好的亲，如有其他问题随时联系我哦~祝您生活愉快，期待下次为您服务！",
+      "tags": ["好的", "收到", "知道了", "嗯"],
+      "priority": 30,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "closing_002",
+      "category": "closing",
+      "scenario": "感谢话术",
+      "content": "不客气，有问题随时联系我们哦~祝您购物愉快！",
+      "tags": ["谢谢", "感谢", "多谢", "辛苦"],
+      "priority": 35,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "closing_003",
+      "category": "closing",
+      "scenario": "期待回访",
+      "content": "感谢您的咨询！如果还有任何问题，欢迎随时联系我们。祝您生活愉快，期待下次为您服务~",
+      "tags": ["感谢", "回访", "期待"],
+      "priority": 28,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "closing_004",
+      "category": "closing",
+      "scenario": "营业时间结束",
+      "content": "亲，我们的客服在线时间为每天 9:00-22:00 哦~非工作时间的留言我们会第一时间回复。感谢您的理解与支持！",
+      "tags": ["下班", "营业时间", "在线时间"],
+      "priority": 25,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "closing_005",
+      "category": "closing",
+      "scenario": "促成下单结束语",
+      "content": "亲，这款有货，下单今天能发哦~如有其他问题随时联系我们，期待您的下单！",
+      "tags": ["下单", "发货", "有货"],
+      "priority": 40,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "transfer_001",
+      "category": "transfer",
+      "scenario": "通用转接专员",
+      "content": "亲，您的问题我需要转接给专业客服为您处理，请稍等片刻，马上为您转接~",
+      "tags": ["转接", "专员", "人工", "客服"],
+      "priority": 90,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "transfer_002",
+      "category": "transfer",
+      "scenario": "转接售后专员",
+      "content": "亲，您的售后问题已收到，马上为您转接到售后专员，会有专人为您处理退换货事宜~",
+      "tags": ["转接", "售后", "退换货", "专员"],
+      "priority": 85,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "transfer_003",
+      "category": "transfer",
+      "scenario": "转接物流专员",
+      "content": "亲，您的物流问题需要物流专员为您查询，正在为您转接，请稍候~",
+      "tags": ["转接", "物流", "快递", "专员"],
+      "priority": 80,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "transfer_004",
+      "category": "transfer",
+      "scenario": "转接售前专员",
+      "content": "亲，关于产品细节和规格的问题，我为您转接到售前专员，会给您更专业的解答~",
+      "tags": ["转接", "售前", "规格", "专员"],
+      "priority": 80,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "transfer_005",
+      "category": "transfer",
+      "scenario": "转接等待安抚",
+      "content": "亲，正在为您转接中，请耐心等待片刻，感谢您的理解与支持~",
+      "tags": ["转接", "等待", "安抚", "耐心"],
+      "priority": 70,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "order_status_001",
+      "category": "order_status",
+      "scenario": "订单状态查询",
+      "content": "亲，您可以在【我的订单】中查看订单实时状态哦~【订单状态】待付款/待发货/已发货/已签收/已关闭。如需了解具体进度，请告诉我订单号，我帮您查询。",
+      "tags": ["订单状态", "订单查询", "订单进度", "我的订单"],
+      "priority": 78,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "order_status_002",
+      "category": "order_status",
+      "scenario": "待付款订单",
+      "content": "亲，您的订单还未付款哦~【待付款】订单生成后24小时内未付款将自动关闭。建议尽快完成支付以确保库存，如需修改订单信息请在付款前联系人工客服。",
+      "tags": ["待付款", "未付款", "订单关闭", "付款期限"],
+      "priority": 75,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "order_status_003",
+      "category": "order_status",
+      "scenario": "已发货订单",
+      "content": "亲，请以订单详情中的实际发货和物流状态为准。【物流查询】我的订单 → 查看物流。如需催件，请提供订单号；我会先提交请求，并根据系统回执告知处理结果。",
+      "tags": ["已发货", "发货", "物流", "快递单号"],
+      "priority": 76,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "order_status_004",
+      "category": "order_status",
+      "scenario": "已签收确认",
+      "content": "亲，订单显示已签收哦~请检查商品外包装是否完好，如有问题请在签收后24小时内联系我们处理。满意的话欢迎五星好评哦~",
+      "tags": ["已签收", "签收", "确认收货", "好评"],
+      "priority": 60,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "order_status_005",
+      "category": "order_status",
+      "scenario": "订单关闭",
+      "content": "亲，该订单已关闭（超时未付款或主动取消）。如仍需购买，可以重新下单哦~如有疑问请联系人工客服。",
+      "tags": ["订单关闭", "已关闭", "订单取消", "超时"],
+      "priority": 65,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "order_modify_001",
+      "category": "order_modify",
+      "scenario": "修改收货地址",
+      "content": "亲，订单地址修改需要人工客服核实处理，我帮您联系人工客服，请稍等~【提示】订单发货前可修改地址，发货后无法修改，请尽快联系。",
+      "tags": ["改地址", "修改地址", "收货地址", "换地址"],
+      "priority": 95,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "order_modify_002",
+      "category": "order_modify",
+      "scenario": "修改规格颜色",
+      "content": "亲，订单规格/颜色修改需要人工客服核实处理，我帮您联系人工客服，请稍等~【提示】订单发货前可修改规格，发货后无法修改，建议尽快联系。",
+      "tags": ["改规格", "改颜色", "改尺码", "修改订单"],
+      "priority": 95,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "order_modify_003",
+      "category": "order_modify",
+      "scenario": "取消订单",
+      "content": "亲，订单取消需要人工客服核实处理，我帮您联系人工客服，请稍等~【提示】待付款订单可直接取消；已付款未发货订单可申请取消；已发货订单无法取消，需收货后申请退货。",
+      "tags": ["取消订单", "撤销订单", "不要了", "取消"],
+      "priority": 96,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "order_modify_004",
+      "category": "order_modify",
+      "scenario": "修改数量",
+      "content": "亲，订单数量修改需要人工客服核实处理，我帮您联系人工客服，请稍等~【提示】订单发货前可修改数量，发货后无法修改。",
+      "tags": ["改数量", "修改数量", "加购", "减少数量"],
+      "priority": 94,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "payment_001",
+      "category": "payment",
+      "scenario": "支付方式咨询",
+      "content": "亲，我们支持支付宝、微信支付、银行卡等多种支付方式哦~【分期付款】部分商品支持花呗分期和信用卡分期。具体支付方式以下单页面显示为准。",
+      "tags": ["支付", "付款方式", "支付宝", "微信支付", "银行卡"],
+      "priority": 60,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "payment_002",
+      "category": "payment",
+      "scenario": "支付失败",
+      "content": "亲，支付失败可能的原因：1）余额不足；2）网络延迟；3）银行系统维护；4）超过支付限额。建议：1）检查支付账户余额；2）更换支付方式；3）稍后重试。如仍无法支付，请联系人工客服或银行客服。",
+      "tags": ["支付失败", "付款失败", "付不了款", "支付不了"],
+      "priority": 78,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "payment_003",
+      "category": "payment",
+      "scenario": "分期付款咨询",
+      "content": "亲，部分商品支持花呗分期和信用卡分期哦~【分期说明】分期期数和手续费以结算页面显示为准。一般支持3期、6期、12期。具体分期资格请以下单页面显示为准。如有疑问请联系人工客服。",
+      "tags": ["分期", "花呗", "信用卡", "分期付款"],
+      "priority": 58,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "payment_004",
+      "category": "payment",
+      "scenario": "货到付款咨询",
+      "content": "亲，本店暂不支持货到付款哦~【建议支付方式】支付宝、微信支付、银行卡、花呗分期。下单时可选择适合您的支付方式。如有特殊需求请联系人工客服。",
+      "tags": ["货到付款", "到付", "现金支付"],
+      "priority": 55,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "refund_001",
+      "category": "refund",
+      "scenario": "退款流程咨询",
+      "content": "亲，退款流程：【申请退款】我的订单 → 申请退款 → 选择退款原因 → 等待审核 → 退款到账。一般审核1-3个工作日，到账时间因支付方式不同而异（1-7个工作日）。",
+      "tags": ["退款流程", "怎么退款", "退款", "退款进度"],
+      "priority": 80,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "refund_002",
+      "category": "refund",
+      "scenario": "退款审核中",
+      "content": "亲，您的退款申请正在审核中，审核一般需要1-3个工作日哦~请耐心等待，审核通过后退款将按原支付路径退回。如有疑问请联系人工客服。",
+      "tags": ["退款审核", "审核中", "退款进度", "等待审核"],
+      "priority": 78,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "refund_003",
+      "category": "refund",
+      "scenario": "退款到账时间",
+      "content": "亲，退款到账时间因支付方式不同：1）支付宝/微信：1-3个工作日；2）银行卡：3-7个工作日；3）花呗/信用卡：7-15个工作日。如超过预计时间未到账，请联系人工客服核实。",
+      "tags": ["退款到账", "退款多久", "退款时间", "退款进度"],
+      "priority": 76,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "refund_004",
+      "category": "refund",
+      "scenario": "退款被拒绝",
+      "content": "亲，非常抱歉退款审核未通过。这类问题需要人工客服为您核实处理，我帮您联系人工客服，请稍等~【提示】可以补充凭证（照片/视频）重新申请，或联系人工客服申诉。",
+      "tags": ["退款拒绝", "退款失败", "退款不通过", "申诉"],
+      "priority": 95,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "account_001",
+      "category": "account",
+      "scenario": "会员等级咨询",
+      "content": "亲，会员等级以店铺活动规则为准哦~【会员等级】一般分为普通会员、银卡、金卡、钻石卡（具体以店铺会员中心显示为准）。不同等级享有不同权益，详情请查看【我的会员】。",
+      "tags": ["会员", "等级", "VIP", "银卡", "金卡"],
+      "priority": 55,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "account_002",
+      "category": "account",
+      "scenario": "积分查询",
+      "content": "亲，积分可在【我的积分】中查看哦~【积分规则】购物按金额赠送积分，积分可在下单时抵扣（具体抵扣规则以店铺活动为准）。积分有效期一般为1年，请及时使用。",
+      "tags": ["积分", "积分查询", "积分抵扣", "积分过期"],
+      "priority": 58,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "account_003",
+      "category": "account",
+      "scenario": "优惠券查询",
+      "content": "亲，优惠券可在【我的优惠券】中查看和使用哦~【优惠券类型】满减券、折扣券、无门槛券。下单时在结算页选择可用优惠券即可。优惠券不可叠加，以使用规则为准。",
+      "tags": ["优惠券", "优惠券查询", "满减券", "折扣券", "领券"],
+      "priority": 62,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "account_004",
+      "category": "account",
+      "scenario": "账户安全",
+      "content": "亲，账户安全问题请联系人工客服处理，我帮您联系人工客服，请稍等~【提示】建议定期更换密码、不点击陌生链接、不向他人透露账户信息。",
+      "tags": ["账户安全", "密码", "账号被盗", "登录异常"],
+      "priority": 95,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "festival_001",
+      "category": "festival",
+      "scenario": "春节特别话术",
+      "content": "亲，春节快乐！【春节期间营业时间】9:00-18:00，部分快递停运，发货可能延迟，请见谅。春节期间咨询量大，回复可能稍有延迟，感谢您的理解与支持~",
+      "tags": ["春节", "新年", "过年", "放假"],
+      "priority": 90,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "festival_002",
+      "category": "festival",
+      "scenario": "双11大促话术",
+      "content": "亲，双11活动火热进行中！【大促期间提醒】咨询量较大，客服回复可能稍有延迟，敬请谅解。如需快速下单，可直接在活动页面操作哦~活动详情以页面显示为准。",
+      "tags": ["双11", "双十一", "大促", "活动"],
+      "priority": 92,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "festival_003",
+      "category": "festival",
+      "scenario": "618大促话术",
+      "content": "亲，618年中大促来啦！【大促期间提醒】咨询量较大，客服回复可能稍有延迟。下单建议尽早，库存紧张商品可能售罄。活动详情以页面显示为准。",
+      "tags": ["618", "年中大促", "大促", "活动"],
+      "priority": 92,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "festival_004",
+      "category": "festival",
+      "scenario": "中秋节话术",
+      "content": "亲，中秋快乐！感谢您的咨询~【温馨提示】节日期间部分快递可能延迟，建议提前下单确保节前到货。如有问题请随时联系我们，祝您阖家团圆~",
+      "tags": ["中秋", "节日", "放假", "团圆"],
+      "priority": 88,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "festival_005",
+      "category": "festival",
+      "scenario": "国庆节话术",
+      "content": "亲，国庆快乐！【国庆期间营业时间】9:00-22:00正常服务。节日期间快递正常配送，但部分偏远地区可能延迟。感谢您的支持，祝您假期愉快~",
+      "tags": ["国庆", "十一", "节日", "放假"],
+      "priority": 88,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "interaction_001",
+      "category": "interaction",
+      "scenario": "买家未回复跟进",
+      "content": "亲，您还在吗？请问还有什么可以帮到您？如暂时不需要也欢迎下次咨询，期待为您服务~",
+      "tags": ["在吗", "未回复", "跟进", "还在吗"],
+      "priority": 40,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "interaction_002",
+      "category": "interaction",
+      "scenario": "买家回复较快时",
+      "content": "亲，感谢您的快速回复~请问还有什么可以帮到您？",
+      "tags": ["快速回复", "互动", "继续咨询"],
+      "priority": 35,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "interaction_003",
+      "category": "interaction",
+      "scenario": "买家表达感谢",
+      "content": "亲，不客气，能为您服务是我们的荣幸~如有其他问题欢迎随时联系我们，期待您的再次光临！",
+      "tags": ["谢谢", "感谢", "不客气", "客气"],
+      "priority": 30,
+      "enabled": true,
+      "source": "builtin"
+    },
+    {
+      "id": "interaction_004",
+      "category": "interaction",
+      "scenario": "买家投诉态度",
+      "content": "亲，非常抱歉给您带来不好的体验！您的问题我们已记录，会尽快由人工客服跟进处理，请稍等片刻~",
+      "tags": ["态度", "投诉", "不满意", "差评"],
+      "priority": 97,
+      "enabled": true,
+      "source": "builtin"
+    }
+  ]
+}

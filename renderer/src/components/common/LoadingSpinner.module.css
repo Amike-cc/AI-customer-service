@@ -1,0 +1,10 @@
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+.spinner {
+  animation: spin 0.75s linear infinite;
+}

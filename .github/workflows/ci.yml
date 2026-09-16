@@ -1,0 +1,122 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: windows-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 主进程类型检查
+        run: npm run typecheck
+
+      # CI-GATE-001：renderer 类型检查此前未纳入 CI，类型回归会被漏掉
+      - name: Renderer 类型检查
+        run: npx tsc --noEmit -p renderer/tsconfig.json
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: 单元测试
+        run: npm run test:unit
+
+      - name: Renderer 测试
+        run: npm run test:renderer
+
+      - name: 混沌测试
+        run: npm run test:chaos
+
+      - name: E2E 测试
+        run: npm run test:e2e
+
+      # 视觉运行时：先重建 venv 再跑集成测试，避免依赖开发机遗留的 venv
+      - name: 安装视觉运行时依赖
+        run: |
+          python -m venv vision/venv
+          vision/venv/Scripts/python -m pip install --upgrade pip
+          vision/venv/Scripts/python -m pip install -r vision/requirements.txt
+        shell: pwsh
+
+      # 真实验证 OCR 识别与 DPI 换算：VISION_PROTOCOL_TEST 返回预制空响应，
+      # 不经过 OCR，无法发现结果解析/推理后端问题（曾因此漏掉真实缺陷）
+      - name: 视觉服务自检
+        run: vision/venv/Scripts/python vision/selfcheck.py --json
+        shell: pwsh
+
+      - name: 视觉 DPI 换算自检
+        run: vision/venv/Scripts/python vision/selftest_scale.py
+        shell: pwsh
+
+      - name: 集成测试
+        run: npm run test:integration
+
+      # 覆盖率门槛在 jest.unit.config.js 中声明；此处不再 continue-on-error 掩盖失败
+      - name: 生成覆盖率报告
+        run: npx jest --config jest.unit.config.js --coverage
+
+      # CI-GATE-001：renderer 构建此前未纳入 CI
+      - name: Renderer 构建
+        run: npm run renderer:build
+
+      - name: 主进程构建
+        run: npm run electron:build
+
+      - name: 上传覆盖率 artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+  # 安装包构建单独成 job：耗时较长，且下载 Electron 二进制失败时不影响主测试 job 结论
+  pack:
+    runs-on: windows-latest
+    needs: test
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 构建并打包（NSIS）
+        run: npm run electron:pack
+        env:
+          # 跳过代码签名，CI 无证书；正式发布需在受控环境签名
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+      - name: 上传安装包 artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: release/*.exe
+          retention-days: 7

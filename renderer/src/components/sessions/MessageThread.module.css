@@ -1,0 +1,64 @@
+.thread {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2);
+}
+
+.bubble {
+  max-width: min(76%, 720px);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  word-break: break-word;
+  animation: slideUp 0.15s ease;
+}
+
+.user {
+  align-self: flex-start;
+  background: var(--bg-tertiary);
+  border-bottom-left-radius: var(--space-1);
+}
+
+.assistant {
+  align-self: flex-end;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  border-bottom-right-radius: var(--space-1);
+}
+
+.system {
+  align-self: center;
+  background: transparent;
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: var(--font-size-sm);
+  max-width: 90%;
+}
+
+.content {
+  white-space: pre-wrap;
+}
+
+.meta {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.assistant .meta {
+  color: rgba(255, 255, 255, 0.84);
+}
+
+@media (max-width: 850px) {
+  .bubble {
+    max-width: 88%;
+  }
+}
+
+.system .meta {
+  display: none;
+}

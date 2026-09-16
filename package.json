@@ -1,0 +1,123 @@
+{
+  "name": "feige-ai-customer-service",
+  "version": "2.0.0",
+  "description": "支持飞鸽、拼多多、快手和微信小店的桌面端 AI 客服系统",
+  "main": "dist/electron/main.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "npx electron .",
+    "setup": "tsx src/setup.ts",
+    "lint": "eslint \"src/**/*.ts\" --max-warnings 0",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "jest --config jest.unit.config.js",
+    "test:renderer": "jest --config jest.renderer.config.js",
+    "test:integration": "jest --config jest.integration.config.js",
+    "test:chaos": "jest --config jest.chaos.config.js --testTimeout=300000",
+    "test:e2e": "jest --config jest.e2e.config.js --testTimeout=600000",
+    "test:all": "npm run test:unit && npm run test:renderer && npm run test:chaos && npm run test:e2e && npm run test:integration",
+    "vision:start": "python vision/vision_service.py",
+    "vision:install": "node scripts/install-vision.js",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "training:export": "electron scripts/training/export-runner.cjs",
+    "smoke:workspace": "node scripts/dev/workspace-smoke.cjs",
+    "renderer:dev": "cd renderer && vite",
+    "renderer:build": "cd renderer && vite build",
+    "electron:dev": "tsc -p tsconfig.json && cd renderer && vite build && cross-env NODE_ENV=development electron .",
+    "electron:build": "tsc -p tsconfig.json && cd renderer && vite build",
+    "electron:rebuild": "electron-rebuild -f -w better-sqlite3",
+    "electron:start": "chcp 65001 > nul && electron . --remote-debugging-port=9222",
+    "electron:prod": "cross-env NODE_ENV=production electron .",
+    "electron:pack": "npm run electron:build && electron-builder --win",
+    "build:all": "npm run typecheck && npm run test:all && npm run renderer:build && tsc -p tsconfig.json",
+    "build:prod": "npm run typecheck && npm run test:all && npm run renderer:build && tsc -p tsconfig.json && cross-env NODE_ENV=production electron-builder --win"
+  },
+  "dependencies": {
+    "axios": "^1.7.0",
+    "better-sqlite3": "^12.11.1",
+    "chrome-remote-interface": "^0.34.0",
+    "dotenv": "^16.4.0",
+    "fs-extra": "^11.2.0",
+    "js-yaml": "^4.1.0",
+    "koffi": "^3.1.1",
+    "lucide-react": "^0.400.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.7.0",
+    "uuid": "^11.1.1",
+    "winston": "^3.13.0",
+    "winston-daily-rotate-file": "^5.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.2.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/chrome-remote-interface": "^0.34.0",
+    "@types/fs-extra": "^11.0.0",
+    "@types/jest": "^29.5.0",
+    "@types/js-yaml": "^4.0.0",
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@types/uuid": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "cross-env": "^7.0.3",
+    "electron": "^43.3.0",
+    "electron-builder": "^25.1.8",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^30.4.1",
+    "jsdom": "^29.1.1",
+    "prettier": "^3.3.0",
+    "ts-jest": "^29.1.0",
+    "tsx": "^4.15.0",
+    "typescript": "^5.4.0",
+    "vite": "^7.3.6"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "python": ">=3.10"
+  },
+  "os": [
+    "win32"
+  ],
+  "private": true,
+  "license": "UNLICENSED",
+  "build": {
+    "appId": "com.feige.ai-customer-service",
+    "productName": "飞鸽AI客服",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "config/**/*",
+      "!config/.env",
+      "!config/.env.*",
+      "!config/production.yaml",
+      "vision/**/*",
+      "!vision/venv/**/__pycache__/**/*",
+      "!vision/venv/**/*.pyc",
+      "!vision/.pytest_cache/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    }
+  }
+}

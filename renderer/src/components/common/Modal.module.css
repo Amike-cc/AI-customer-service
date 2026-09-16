@@ -1,0 +1,104 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background: rgba(10, 15, 27, 0.46);
+  backdrop-filter: blur(7px) saturate(80%);
+  animation: fadeIn 0.16s ease;
+}
+
+.dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 560px;
+  max-width: calc(100vw - 48px);
+  max-height: min(86vh, 820px);
+  overflow: hidden;
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  animation: slideUp 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dialog:focus {
+  outline: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 60px;
+  padding: 14px 18px 13px 22px;
+  background: var(--surface-glass);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.title {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: 720;
+  letter-spacing: -0.18px;
+}
+
+.closeBtn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  transition: color var(--transition-base), background var(--transition-base), border-color var(--transition-base), transform var(--transition-fast);
+}
+
+.closeBtn:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+  border-color: var(--border);
+}
+
+.closeBtn:active {
+  transform: scale(0.94);
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 22px 22px;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  min-height: 64px;
+  padding: 13px 22px;
+  background: var(--bg-tertiary);
+  border-top: 1px solid var(--border-light);
+}
+
+@media (max-width: 720px) {
+  .overlay {
+    align-items: flex-end;
+    padding: var(--space-3);
+  }
+
+  .dialog {
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 24px);
+    border-radius: var(--radius-lg);
+  }
+}

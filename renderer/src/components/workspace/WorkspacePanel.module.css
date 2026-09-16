@@ -1,0 +1,312 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  padding: 14px 14px 18px 0;
+  overflow-y: auto;
+  background: var(--bg-primary);
+  border-left: 0;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 4px 4px 11px 2px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  justify-content: space-between;
+}
+
+.panelEyebrow {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.panelTitle {
+  display: block;
+  color: var(--text-primary);
+  font-size: 17px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.panelPlatform {
+  margin-left: auto;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.shopName {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.loginStatus {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-xs);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.fullWidth {
+  width: 100%;
+  justify-content: center;
+}
+
+.fullWidth :global(svg) {
+  flex: 0 0 auto;
+}
+.aiSwitch {
+  display: inline-flex;
+  align-items: center;
+  width: 29px;
+  height: 17px;
+  padding: 2px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.38);
+}
+.aiSwitchOn,
+.aiSwitchOff {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform var(--transition-fast);
+}
+.aiSwitchOn {
+  transform: translateX(12px);
+}
+.aiSwitchOff {
+  transform: translateX(0);
+}
+.switchHint {
+  margin-left: auto;
+  font-size: 10px;
+  opacity: 0.72;
+}
+
+.healthLine {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+.healthLine strong {
+  margin-left: auto;
+  color: var(--success);
+  font-weight: 650;
+}
+.healthDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 3px var(--success-dim);
+}
+.takeoverSection {
+  margin-top: -10px;
+  padding-top: 0;
+  border-top: 0;
+  border-radius: 0 0 11px 11px;
+  box-shadow: none;
+}
+.controlSection {
+  gap: 10px;
+  padding-bottom: 10px;
+  border-radius: 11px 11px 0 0;
+  border-bottom: 0;
+  box-shadow: none;
+}
+.takeoverSection .fullWidth {
+  color: var(--warning);
+  border-color: color-mix(in srgb, var(--warning) 65%, transparent);
+  background: var(--warning-dim);
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.metricList,
+.transferList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.productCard {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+}
+
+.productThumb {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border-radius: 7px;
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+.productCopy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 3px;
+}
+.productCopy strong {
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.productCopy span {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.productActions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.qualityCard {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 8px;
+}
+.qualityCard strong {
+  grid-row: span 2;
+  color: var(--accent);
+  font-size: 26px;
+  font-weight: 700;
+}
+.qualityCard span {
+  color: var(--text-primary);
+  font-size: 12px;
+}
+.qualityCard small {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.metricList li,
+.transferList li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.metricList strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.transferKind {
+  color: var(--text-primary);
+}
+
+.transferTime {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.empty {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.orderSummary {
+  margin: 0;
+  max-height: 160px;
+  overflow: auto;
+  padding: var(--space-2);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: var(--bg-tertiary, rgba(0, 0, 0, 0.03));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.actionGrid button {
+  justify-content: center;
+}
+
+.spanTwo {
+  grid-column: 1 / -1;
+}

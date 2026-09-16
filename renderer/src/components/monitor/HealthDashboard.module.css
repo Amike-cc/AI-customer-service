@@ -1,0 +1,205 @@
+.container {
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: var(--space-4);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: 720;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  flex: 1;
+  letter-spacing: -0.2px;
+}
+
+.headerMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.refreshBtn:hover {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+
+.refreshBtn:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.refreshBtn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.spinning {
+  animation: spin 0.9s linear infinite;
+}
+
+.errorBanner {
+  margin-bottom: var(--space-4);
+  padding: 10px 12px;
+  color: var(--danger);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  background: var(--danger-dim);
+  border: 1px solid color-mix(in srgb, var(--danger) 28%, var(--border));
+  border-radius: var(--radius-md);
+}
+
+.overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.statCard {
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.statLabel {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-bottom: var(--space-1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.statValue {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.section {
+  padding: var(--space-4);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.table th {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary);
+}
+
+.nameCell {
+  font-weight: 500;
+}
+
+.stateTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.unreadBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--space-6);
+}
+
+.successText {
+  color: var(--success);
+}
+
+.dangerText {
+  color: var(--danger);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 850px) {
+  .overview {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+}
